@@ -1,0 +1,15 @@
+{
+  "apiKey": "change-me",
+  "browser": "edge",
+  "port": 3310,
+  "browsers": {
+    "chrome": {
+      "runCommand": "chrome",
+      "preferredVoices": []
+    },
+    "edge": {
+      "runCommand": "msedge",
+      "preferredVoices": []
+    }
+  }
+}

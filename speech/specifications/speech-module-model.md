@@ -55,6 +55,7 @@ The web api REST interface is defined as below:
     ```json
     {
         "apiKey": "the api key that must match the one defined in the module configuration",        
+        "browser": "the browser key to be launched. must match a key in the browsers object. default is 'edge'",
         "port": "the port on which the http server runs",
         "browsers": {
             /* json objects for each configured browser */
