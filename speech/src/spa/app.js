@@ -4,8 +4,25 @@ const elActivity = document.getElementById('activity')
 const elVoicesCount = document.getElementById('voicesCount')
 const elLog = document.getElementById('log')
 
+let maxLogLines = 15
+const logLines = []
+
 function log(line) {
-	elLog.textContent = `${new Date().toISOString()} ${line}\n` + elLog.textContent
+	logLines.unshift(`${new Date().toISOString()} ${line}`)
+	logLines.splice(maxLogLines)
+	elLog.textContent = logLines.join('\n')
+}
+
+async function loadConfig() {
+	try {
+		const res = await fetch('/config')
+		if (!res.ok) return
+		const cfg = await res.json()
+		const parsed = Number.parseInt(cfg?.maxLogLines, 10)
+		if (Number.isFinite(parsed) && parsed > 0) maxLogLines = parsed
+	} catch {
+		// ignore
+	}
 }
 
 function setBadge(el, text, ok) {
@@ -145,4 +162,5 @@ function connect() {
 	}
 }
 
+await loadConfig()
 connect()

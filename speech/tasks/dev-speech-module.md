@@ -26,12 +26,17 @@ Add a test program in `modules/speech/src/test.js` that launch the module and ca
 test test.js must first get the available voices list and select the first one to pass as a parameter to the speak web api call
 ```
 
+# 4) improvements
+
+```text
+limit the size of the log displayed in the SPA page to a number of lines defined by the new property `maxLogLines` in config.json, default value to 15
+```
 
 *👉 this task should requires using model **GPT-2.5 low reasoning***
 
 step 1) is  saved into doc/implementation.md
 
-### 4) fix errors
+### had to fix errors at first implementation
 
 ```shell
 TypeError [ERR_IMPORT_ATTRIBUTE_MISSING]: Module "file:///E:/DEV/repos/auto-agents/modules/speech/src/config/config.json" needs an import attribute of "type: json"

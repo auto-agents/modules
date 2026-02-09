@@ -32,6 +32,11 @@ export default class SpeechServer {
 			res.json({ runningStatus: this.runningStatus })
 		})
 
+		app.get('/config', (req, res) => {
+			const maxLogLines = Number.isFinite(this.config?.maxLogLines) ? this.config.maxLogLines : 15
+			res.json({ maxLogLines })
+		})
+
 		app.get('/capabilities', (req, res) => {
 			res.json({ voiceList: this.voiceList })
 		})
