@@ -59,7 +59,7 @@ async function waitForVoices(baseUrl, timeoutMs = 30000) {
 		}
 		await sleep(500)
 	}
-	throw new Error('timeout waiting for voice capabilities (is the browser SPA connected?)')
+	throw new Error(`timeout waiting for voice capabilities (is the browser SPA connected?) open ${baseUrl}/app/ and check that it shows 'connected'`)
 }
 
 async function main() {

@@ -65,3 +65,8 @@ Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'express' imported from E:\DEV
 }
 ```
 
+```shell
+Error: timeout waiting for voice capabilities (is the browser SPA connected?)
+    at waitForVoices (file:///E:/DEV/repos/auto-agents/modules/speech/src/test.js:62:8)
+    at async main (file:///E:/DEV/repos/auto-agents/modules/speech/src/test.js:90:21)
+```

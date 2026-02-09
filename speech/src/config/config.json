@@ -4,11 +4,11 @@
   "port": 3310,
   "browsers": {
     "chrome": {
-      "runCommand": "chrome",
+      "runCommand": "cmd /c start \"\" chrome \"{url}\"",
       "preferredVoices": []
     },
     "edge": {
-      "runCommand": "msedge",
+      "runCommand": "cmd /c start \"\" msedge \"{url}\"",
       "preferredVoices": []
     }
   }
