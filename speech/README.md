@@ -23,6 +23,10 @@ built within:
 - guidelines in file [`doc/implementation.md` ](doc/implementation.md)
 - tasks in file [`tasks/dev-speech-module.md`](tasks/dev-speech-module.md)
 
+check documentation:
+
+- [user documentation](doc/user-doc.md)
+
 ---
 
 *this software is copyrighted by Franck Gaspoz, since January 2026, under the **GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007** (see file [LICENCE](LICENSE))*

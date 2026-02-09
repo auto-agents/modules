@@ -1,8 +1,8 @@
 # User doc
 
-User must allow explicitely his browser to allow sound without any human gesture
+User must allow explicitely his browser to allow play sound even if there is no human gesture (this is a browser security spec from W3C)
 
-otherwise, you got the error `error: not allowed` as show below (SPA in the `chrome` browser):
+otherwise, you will got the error `error: not allowed` as shown below (snapshot of the SPA running in the `chrome` browser):
 
 <img src="./not-allowed.png" alt="browser not-allowed">
 

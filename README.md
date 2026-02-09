@@ -20,7 +20,7 @@
 
 available modules:
 
-- speech
+- [speech](speech/README.md)
 - voice recognition
 
 ---
