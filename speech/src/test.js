@@ -1,4 +1,5 @@
 import { spawn } from 'child_process'
+import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -7,6 +8,12 @@ const __dirname = path.dirname(__filename)
 
 function sleep(ms) {
 	return new Promise((r) => setTimeout(r, ms))
+}
+
+function readConfig() {
+	const p = path.resolve(__dirname, 'config', 'config.json')
+	const raw = fs.readFileSync(p, 'utf-8')
+	return JSON.parse(raw)
 }
 
 async function httpJson(url, { method = 'GET', body } = {}) {
@@ -58,7 +65,7 @@ async function waitForVoices(baseUrl, timeoutMs = 30000) {
 async function main() {
 	const moduleRoot = path.resolve(__dirname, '..')
 
-	const config = (await import('./config/config.json', { assert: { type: 'json' } })).default
+	const config = readConfig()
 	const baseUrl = `http://localhost:${config.port}`
 
 	const child = spawn(process.execPath, ['src/main.js'], {

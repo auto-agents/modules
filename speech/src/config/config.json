@@ -1,6 +1,6 @@
 {
   "apiKey": "change-me",
-  "browser": "edge",
+  "browser": "chrome",
   "port": 3310,
   "browsers": {
     "chrome": {
