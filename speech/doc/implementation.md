@@ -11,17 +11,6 @@ From `modules/speech/specifications/speech-module-model.md`, the module is:
   - state owner (`idle` / `speaking`)
   - process orchestrator (start browser, reconnect, etc.)
 
-## Spec mismatch to resolve
-
-The spec intro mentions “speech-to-text capabilities”, but the REST API describes text-to-speech behavior:
-
-- `POST /speak` with `{ sentence, voice }`
-- `POST /stop`
-- `/capabilities` returns available voices
-- `runningStatus: "speaking"` indicates the module is currently speaking
-
-So the concrete implementation below follows Text-to-Speech (TTS) via `window.speechSynthesis`, unless you extend the API with STT endpoints later.
-
 ## High-level architecture
 
 ### 1) Node service (Express)
@@ -172,3 +161,14 @@ So a natural integration is:
 
 - CLI starts the speech module service if it is not already running.
 - CLI sends HTTP requests (e.g. `POST /speak`) when a command like `/speak hello` is invoked.
+
+## Files
+
+- the module is implemented in `modules/speech/src`
+- the SPA files are in `modules/speech/src/spa`
+- the backend filed are in `modules/speech/src/backend`
+- the main file is in `modules/speech/src/main.js`
+- the configuration file is in `modules/speech/src/config/config.json`
+- the specification file is in `modules/speech/specifications/speech-module-model.md`
+- your implementation guidelines are in `modules/speech/doc/implementation.md`
+- the tasks are in `modules/speech/tasks`

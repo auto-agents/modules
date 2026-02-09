@@ -2,13 +2,13 @@
 
 ## definitions
 
-The speech module is a stand-alone service accessible throught a `HTTP` interface. It provides speech-to-text capabilities. It can be used by any agent and by the cli tool to convert speech to text.
+The speech module is a stand-alone service accessible throught a `HTTP` interface. It provides text-to-speech capabilities. It can be used by any agent and by the cli tool to convert speech to text.
 
 ## implementation
 
 The speech functionalities is provided by any browser that implements the Web Speech API.
 
-The module first runs an http server running a web api that listen to http requests, according to the interface REST specifications. The module is based on the NodeJS runtime environment and javascsript. The http server is implemented by the `express` framework. Once the server is ready, the module opens a browser window that runs a web application that provides speech-to-text capabilities. The web application is implemented by the `web speech api`. The web application contains a single page (SPA) that provides a simple interface to the user to shows the speech-to-text api, running status and current activity. The running status is one of the follwing:
+The module first runs an http server running a web api that listen to http requests, according to the interface REST specifications. The module is based on the NodeJS runtime environment and javascsript. The http server is implemented by the `express` framework. Once the server is ready, the module opens a browser window that runs a web application that provides text-to-speech capabilities. The web application is implemented by the `web speech api`. The web application contains a single page (SPA) that provides a simple interface to the user to shows the text-to-speech api, running status and current activity. The running status is one of the follwing:
 ```json
 {
     "runningStatus": "idle" | "speaking"
@@ -70,4 +70,14 @@ The web api REST interface is defined as below:
     }
     ```
 
-    
+    ## files
+
+    - the module is implemented in `modules/speech/src`
+    - the SPA files are in `modules/speech/src/spa`
+    - the backend filed are in `modules/speech/src/backend`
+    - the main file is in `modules/speech/src/main.js`
+    - the configuration file is in `modules/speech/src/config/config.json`
+    - the specification file is in `modules/speech/specifications/speech-module-model.md`
+    - your implementation guidelines are in `modules/speech/doc/implementation.md`
+    - the tasks are in `modules/speech/tasks`
+
