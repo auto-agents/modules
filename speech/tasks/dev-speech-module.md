@@ -76,6 +76,8 @@ add js files in module/speech/src/commands to call each method exposed by speech
 
 ```text
 document the commands usage in the new file `modules/speech/doc/commands-usage.md`
+
+document the usage of the methods of speech-module.js in the new file `modules/speech/doc/speech-module-usage.md`
 ```
 
 *👉 this task should requires using model **GPT-2.5 low reasoning***

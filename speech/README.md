@@ -26,6 +26,8 @@ built within:
 check documentation:
 
 - [user documentation](doc/user-doc.md)
+- [commands usage](doc/commands-usage.md)
+- [speech module usage](doc/speech-module-usage.md)
 
 ---
 
