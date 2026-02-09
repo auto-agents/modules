@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "start": "node src/main.js",
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "cmd:launch-server": "node src/commands/launch-server.js",
+    "cmd:open-browser": "node src/commands/open-browser.js",
+    "cmd:speak": "node src/commands/speak.js",
+    "cmd:get-running-status": "node src/commands/get-running-status.js",
+    "cmd:get-voices": "node src/commands/get-voices.js"
   },
   "dependencies": {
     "express": "^4.19.2",

@@ -66,6 +66,18 @@ fix: the test.js never terminates
 fix: illegal newline after throw
 ```
 
+#### add test commands
+
+```text
+add js files in module/speech/src/commands to call each method exposed by speech-module.js. these commands must be implemented as cli tools with parameters. add them as npm commands in package.json. commands file names have no upper case letters. use - to separate words. do not implement the `stop` command
+```
+
+### document it
+
+```text
+document the commands usage in the new file `modules/speech/doc/commands-usage.md`
+```
+
 *👉 this task should requires using model **GPT-2.5 low reasoning***
 
 step 1) is  saved into doc/implementation.md
