@@ -26,7 +26,7 @@ Add a test program in `modules/speech/src/test.js` that launch the module and ca
 test test.js must first get the available voices list and select the first one to pass as a parameter to the speak web api call
 ```
 
-# 4) improvements
+### 4) improvements
 
 ```text
 limit the size of the log displayed in the SPA page to a number of lines defined by the new property `maxLogLines` in config.json, default value to 15
@@ -34,6 +34,22 @@ limit the size of the log displayed in the SPA page to a number of lines defined
 add the display of the list of available voices with all of their properties in the SPA page
 
 add a property in the config.json that indicates the plateform where the software is running on. it might be `linux`, `windows` or `mac` default value to `windows`. the settings `browsers` must be updated to use the correct run command. the preferred voices settings must not dependent on the selected plateform
+
+Add a js module in the file `modules/speech/src/speech-module.js` that can be imported in any node project that export the following methods:
+- launch the module server (returns a promise that resolves when the module is ready to be used)
+- stop the module server (returns a promise that resolves when the module is stopped)
+- open the browser on the SPA page (returns a promise that resolves when the browser is opened)
+- speak a sentence (returns a promise that resolves when the sentence has been spoken or rejects if an error occurs)
+- get the current running status (returns a promise that resolves to the current running status)
+- get the list of available voices (returns a promise that resolves to the list of available voices)
+All the methods have parameters that corresponds to the parameters of the web api calls
+Adapt the file `test.js` and the file `main.js` to use the new file `speech-module.js`
+
+fix: the SPA logs 'ws interrupted' and do not speek
+
+fix: the test.js never terminates
+
+fix: illegal newline after throw
 ```
 
 *👉 this task should requires using model **GPT-2.5 low reasoning***

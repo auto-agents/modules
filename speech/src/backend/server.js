@@ -15,6 +15,7 @@ export default class SpeechServer {
 		this.voiceList = []
 		this.wsClient = null
 		this.lastActivity = null
+		this.httpSockets = new Set()
 	}
 
 	start() {
@@ -63,6 +64,12 @@ export default class SpeechServer {
 		})
 
 		const server = http.createServer(app)
+		server.on('connection', (socket) => {
+			this.httpSockets.add(socket)
+			socket.on('close', () => {
+				this.httpSockets.delete(socket)
+			})
+		})
 		const wss = new WebSocketServer({ server, path: '/ws' })
 
 		wss.on('connection', (ws) => {
@@ -95,6 +102,53 @@ export default class SpeechServer {
 				resolve()
 			})
 		})
+	}
+
+	stop() {
+		const tasks = []
+
+		for (const socket of this.httpSockets) {
+			try {
+				socket.destroy()
+			} catch {
+				// ignore
+			}
+		}
+		this.httpSockets.clear()
+
+		if (this.wsClient) {
+			try {
+				this.wsClient.close()
+			} catch {
+				// ignore
+			}
+			this.wsClient = null
+		}
+
+		if (this.wss) {
+			tasks.push(new Promise((resolve) => {
+				try {
+					this.wss.close(() => resolve())
+				} catch {
+					resolve()
+				}
+			}))
+			this.wss = null
+		}
+
+		if (this.server) {
+			tasks.push(new Promise((resolve) => {
+				try {
+					this.server.close(() => resolve())
+				} catch {
+					resolve()
+				}
+			}))
+			this.server = null
+		}
+
+		this.runningStatus = 'idle'
+		return Promise.all(tasks).then(() => undefined)
 	}
 
 	_handleWsMessage(msg) {
