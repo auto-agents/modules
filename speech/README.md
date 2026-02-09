@@ -19,9 +19,9 @@
 ---
 
 built within:
-- specifications in file [`specifications/speech-module-model.md`]()
-- guidelines in file [`doc/implementation.md` ]()
-- tasks in file [`tasks/dev-speech-module.md`]()
+- specifications in file [`specifications/speech-module-model.md`](specifications/speech-module-model.md)
+- guidelines in file [`doc/implementation.md` ](doc/implementation.md)
+- tasks in file [`tasks/dev-speech-module.md`](tasks/dev-speech-module.md)
 
 ---
 
