@@ -8,7 +8,7 @@ otherwise, you got the error `error: not allowed` as show below (SPA in the `chr
 
 click on the button in the url bar:
 
-<img src="./webapp-authroizations.png" alt="browser not-allowed">
+<img src="./webapp-authorizations.png" alt="browser not-allowed">
 
 in the menu acces to **`site parameters`**, and select:
 
