@@ -1,20 +1,53 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Auto Agents - Speech Module</title>
 	<style>
-		:root { color-scheme: light dark; }
-		body { font-family: Arial, Helvetica, sans-serif; margin: 20px; }
-		.grid { display: grid; grid-template-columns: 200px 1fr; row-gap: 8px; column-gap: 12px; max-width: 900px; }
-		.label { opacity: 0.75; }
-		.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid #777; }
-		.badge.ok { border-color: #2a7; }
-		.badge.ko { border-color: #c33; }
-		pre { white-space: pre-wrap; }
+		:root {
+			color-scheme: light dark;
+		}
+
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			margin: 20px;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: 200px 1fr;
+			row-gap: 8px;
+			column-gap: 12px;
+			max-width: 900px;
+		}
+
+		.label {
+			opacity: 0.75;
+		}
+
+		.badge {
+			display: inline-block;
+			padding: 2px 8px;
+			border-radius: 999px;
+			border: 1px solid #777;
+		}
+
+		.badge.ok {
+			border-color: #2a7;
+		}
+
+		.badge.ko {
+			border-color: #c33;
+		}
+
+		pre {
+			white-space: pre-wrap;
+		}
 	</style>
 </head>
+
 <body>
 	<h1>Speech module</h1>
 	<div class="grid">
@@ -34,6 +67,10 @@
 	<h2>Logs</h2>
 	<pre id="log"></pre>
 
+	<h2>Available voices</h2>
+	<pre id="voices"></pre>
+
 	<script type="module" src="./app.js"></script>
 </body>
+
 </html>

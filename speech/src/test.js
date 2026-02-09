@@ -67,6 +67,8 @@ async function main() {
 
 	const config = readConfig()
 	const baseUrl = `http://localhost:${config.port}`
+	console.log(`speech module test: platform=${config.platform || 'windows'} browser=${config.browser || 'edge'}`)
+	console.log(`speech module test: spa url: ${baseUrl}/app/`)
 
 	const child = spawn(process.execPath, ['src/main.js'], {
 		cwd: moduleRoot,

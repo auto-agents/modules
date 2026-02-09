@@ -19,6 +19,7 @@ Responsibilities:
 
 - Load config from `modules/speech/src/config/config.json`:
   - `apiKey`
+  - `platform` (`linux` | `windows` | `mac`, default `windows`)
   - `browser` (browser key to be launched, default `edge`)
   - `port`
   - `browsers.{chrome|edge}.runCommand`
@@ -94,7 +95,7 @@ Payload (per spec):
 
 Voice selection logic:
 
-- If `voice` is provided: SPA tries exact match by `name`.
+- If `voice` is provided: SPA tries exact match by `name`. (not dependent on the selected platform)
 - Else: SPA selects the first match from configured `preferredVoices` for the chosen browser.
 - Else: fall back to browser default voice.
 
@@ -127,7 +128,7 @@ Because voice enumeration is browser-side, Node learns this list from the SPA.
 2. Node serves:
    - REST under `/`
    - SPA static assets under `/app` (or `/`)
-3. Node starts WebSocket server (same port).
+3. Node starts WebSocket server (same port).[config.platform]`, default platform is `windows
 4. Node launches browser using `browsers[config.browser].runCommand` (default browser is `edge`) pointing to the SPA URL.
 5. SPA connects to WebSocket and pushes:
    - `CAPABILITIES` (voice list)

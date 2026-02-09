@@ -55,16 +55,25 @@ The web api REST interface is defined as below:
     ```json
     {
         "apiKey": "the api key that must match the one defined in the module configuration",        
+        "platform": "the plateform where the software is running on. might be 'linux', 'windows' or 'mac'. default is 'windows'",
         "browser": "the browser key to be launched. must match a key in the browsers object. default is 'edge'",
         "port": "the port on which the http server runs",
         "browsers": {
             /* json objects for each configured browser */
             "chrome": {
-                "runCommand": "the sell command that runs the browser and opens the web application",
+                "runCommand": {
+                    "windows": "the sell command that runs the browser and opens the web application on windows",
+                    "linux": "the sell command that runs the browser and opens the web application on linux",
+                    "mac": "the sell command that runs the browser and opens the web application on mac"
+                },
                 "preferredVoices": [ /* array of names of preferred voices the user want to be used when no voice is specified */ ]        
             },
             "edge": {
-                "runCommand": "the sell command that runs the browser and opens the web application",
+                "runCommand": {
+                    "windows": "the sell command that runs the browser and opens the web application on windows",
+                    "linux": "the sell command that runs the browser and opens the web application on linux",
+                    "mac": "the sell command that runs the browser and opens the web application on mac"
+                },
                 "preferredVoices": [ /* array of names of preferred voices the user want to be used when no voice is specified */ ]
             }
         

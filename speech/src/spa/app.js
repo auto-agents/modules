@@ -3,6 +3,7 @@ const elStatus = document.getElementById('status')
 const elActivity = document.getElementById('activity')
 const elVoicesCount = document.getElementById('voicesCount')
 const elLog = document.getElementById('log')
+const elVoices = document.getElementById('voices')
 
 let maxLogLines = 15
 const logLines = []
@@ -39,6 +40,23 @@ function safeLang(v) {
 function getVoices() {
 	const list = window.speechSynthesis?.getVoices?.() || []
 	return list.map(v => ({ name: v.name, lang: safeLang(v.lang || (v.localService ? v.lang : v.lang) || 'multilingual') }))
+}
+
+function getVoicesFull() {
+	const list = window.speechSynthesis?.getVoices?.() || []
+	return list.map(v => ({
+		voiceURI: v.voiceURI,
+		name: v.name,
+		lang: v.lang,
+		localService: v.localService,
+		default: v.default
+	}))
+}
+
+function renderVoices() {
+	if (!elVoices) return
+	const full = getVoicesFull()
+	elVoices.textContent = JSON.stringify(full, null, 2)
 }
 
 function pickVoiceByNameOrPreferred(voices, voiceName, preferredVoices) {
@@ -124,6 +142,7 @@ function connect() {
 			const voiceList = getVoices()
 			elVoicesCount.textContent = String(voiceList.length)
 			send(ws, { type: 'CAPABILITIES', voiceList })
+			renderVoices()
 		}
 
 		pushCaps()

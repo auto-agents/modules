@@ -30,6 +30,10 @@ test test.js must first get the available voices list and select the first one t
 
 ```text
 limit the size of the log displayed in the SPA page to a number of lines defined by the new property `maxLogLines` in config.json, default value to 15
+
+add the display of the list of available voices with all of their properties in the SPA page
+
+add a property in the config.json that indicates the plateform where the software is running on. it might be `linux`, `windows` or `mac` default value to `windows`. the settings `browsers` must be updated to use the correct run command. the preferred voices settings must not dependent on the selected plateform
 ```
 
 *👉 this task should requires using model **GPT-2.5 low reasoning***

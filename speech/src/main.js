@@ -17,11 +17,22 @@ function buildAppUrl(config) {
 	return `http://localhost:${config.port}/app/`
 }
 
+function resolveRunCommand(browserCfg, platformKey) {
+	const rc = browserCfg?.runCommand
+	if (!rc) return null
+	if (typeof rc === 'string') return rc
+	if (typeof rc === 'object') {
+		return rc?.[platformKey] || rc?.windows || rc?.linux || rc?.mac || null
+	}
+	return null
+}
+
 function runBrowser(config, url) {
+	const platformKey = (config?.platform || 'windows').toLowerCase()
 	const browserKey = (config?.browser || 'edge').toLowerCase()
-	const cmd = config?.browsers?.[browserKey]?.runCommand
-		|| config?.browsers?.edge?.runCommand
-		|| config?.browsers?.chrome?.runCommand
+	const cmd = resolveRunCommand(config?.browsers?.[browserKey], platformKey)
+		|| resolveRunCommand(config?.browsers?.edge, platformKey)
+		|| resolveRunCommand(config?.browsers?.chrome, platformKey)
 	if (!cmd) return
 
 	const finalCmd = cmd.includes('{url}') ? cmd.replace('{url}', url) : `${cmd} ${url}`

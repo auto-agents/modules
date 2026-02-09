@@ -1,15 +1,24 @@
 {
   "apiKey": "change-me",
+  "platform": "windows",
   "browser": "edge",
   "maxLogLines": 15,
   "port": 3310,
   "browsers": {
     "chrome": {
-      "runCommand": "cmd /c start \"\" chrome \"{url}\"",
+      "runCommand": {
+        "windows": "cmd /c start \"\" chrome \"{url}\"",
+        "linux": "google-chrome-stable \"{url}\"",
+        "mac": "open -a \"Google Chrome\" \"{url}\""
+      },
       "preferredVoices": []
     },
     "edge": {
-      "runCommand": "cmd /c start \"\" msedge \"{url}\"",
+      "runCommand": {
+        "windows": "cmd /c start \"\" msedge \"{url}\"",
+        "linux": "microsoft-edge \"{url}\"",
+        "mac": "open -a \"Microsoft Edge\" \"{url}\""
+      },
       "preferredVoices": []
     }
   }
