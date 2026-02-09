@@ -6,4 +6,4 @@
 implements the speech module
 ```
 
-*👉 this task should requires using model ****GPT-2.5 low reasoning******
+*👉 this task should requires using model **GPT-2.5 low reasoning***
