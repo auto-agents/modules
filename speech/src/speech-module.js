@@ -39,7 +39,7 @@ function resolveRunCommand(browserCfg, platformKey) {
 }
 
 export default class SpeechModule {
-	constructor({ config }) {
+	constructor(config) {
 		this.config = config
 		this.server = null
 		this.browserProcess = null
