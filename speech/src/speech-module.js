@@ -65,8 +65,8 @@ export default class SpeechModule {
 
 	async waitForRunningStatus({ expected, timeoutMs = 30000, pollMs = 250 } = {}) {
 		const start = Date.now()
-		if (!timeoutMs) timeoutMs = 30000
-		if (!pollMs) pollMs = 250
+		timeoutMs ||= 60000 * 10
+		pollMs ||= 250
 		while (Date.now() - start < timeoutMs) {
 			const s = await this.getRunningStatus()
 			if (s?.runningStatus === expected) return s
@@ -107,7 +107,8 @@ export default class SpeechModule {
 		this.browserProcess = p
 	}
 
-	async speak({ sentence, voice, apiKey }) {
+	async speak({ sentence, voice, apiKey, timeout }) {
+		timeout ||= 60000 * 10
 		const res = await httpJson(`${this.baseUrl()}/speak`, {
 			method: 'POST',
 			body: {
@@ -119,7 +120,7 @@ export default class SpeechModule {
 		if (!res.ok) throw new Error(`POST /speak failed: ${res.status} ${res.text}`)
 
 		await this.waitForRunningStatus({ expected: 'speaking', timeoutMs: 10000 })
-		await this.waitForRunningStatus({ expected: 'idle', timeoutMs: 60000 })
+		await this.waitForRunningStatus({ expected: 'idle', timeoutMs: timeout })
 		return res.json
 	}
 
