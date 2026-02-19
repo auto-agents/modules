@@ -65,12 +65,14 @@ export default class SpeechModule {
 
 	async waitForRunningStatus({ expected, timeoutMs = 30000, pollMs = 250 } = {}) {
 		const start = Date.now()
+		if (!timeoutMs) timeoutMs = 30000
+		if (!pollMs) pollMs = 250
 		while (Date.now() - start < timeoutMs) {
 			const s = await this.getRunningStatus()
 			if (s?.runningStatus === expected) return s
 			await sleep(pollMs)
 		}
-		throw new Error(`timeout waiting for runningStatus='${expected}'`)
+		throw new Error(`timeout (${timeoutMs}) waiting for runningStatus='${expected}'`)
 	}
 
 	async launchServer() {
@@ -119,6 +121,13 @@ export default class SpeechModule {
 		await this.waitForRunningStatus({ expected: 'speaking', timeoutMs: 10000 })
 		await this.waitForRunningStatus({ expected: 'idle', timeoutMs: 60000 })
 		return res.json
+	}
+
+	// turn off current speak if any
+	async shetUp(apiKey) {
+		const status = await this.getRunningStatus()
+		if (status.runningStatus != 'speaking') return
+		await this.speak({ sentence: '.', voice: null, apiKey })
 	}
 
 	async getRunningStatus() {
