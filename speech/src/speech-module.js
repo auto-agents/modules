@@ -121,6 +121,9 @@ export default class SpeechModule {
 
 		await this.waitForRunningStatus({ expected: 'speaking', timeoutMs: 10000 })
 		await this.waitForRunningStatus({ expected: 'idle', timeoutMs: timeout })
+
+		//console.log('SERVER: END SPEAK')
+
 		return res.json
 	}
 
