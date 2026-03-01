@@ -39,6 +39,7 @@ function resolveRunCommand(browserCfg, platformKey) {
 }
 
 export default class SpeechModule {
+
 	constructor({ config }) {
 		this.config = config
 		this.server = null
@@ -76,9 +77,13 @@ export default class SpeechModule {
 	}
 
 	async launchServer() {
-		if (this.server) return
-		this.server = new SpeechServer({ config: this.config })
-		await this.server.start()
+		try {
+			if (this.server) return
+			this.server = new SpeechServer({ config: this.config })
+			await this.server.start()
+		} catch (err) {
+			throw new Error('launch server error: ' + err.message)
+		}
 	}
 
 	async stopServer() {
