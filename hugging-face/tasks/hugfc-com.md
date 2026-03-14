@@ -1,6 +1,11 @@
 ### command: `hugfc`
 
-Implements a new command named `hugfc`, according to the specification in file `modules/tasks/dev-com.md`. Write the result in the appropriate file in `modules/hugging-face/module/commands/` folder. update the property `cli.commands` in file `modules/hugging-face/module/config/config.js` to include the new command. Add the file and the property if they are missing. Implements a command implementation body in the run method of the command class. The body must find one parameter in `args` named `model`. It must call the python cli tool `modules/hugging-face/module/src/get_model_card/cli.py <modelName>` passing the model name as argument.
+Implements a new command named `hugfc`, according to the specification in file `modules/tasks/dev-com.md`. Write the result in the appropriate file in `modules/hugging-face/module/commands/` folder. 
+
+update the property `cli.commands` in file `modules/hugging-face/module/config/config.js` to include the new command. Add the file and the property if they are missing. 
+
+Implements a command implementation body in the run method of the command class. The body must find one parameter in `args` named `model`. It must call the python cli tool `modules/hugging-face/src/get_model_card/cli.py <modelName>` passing the model name as argument.
+
 Use as a model the command class in `cli/source/commands/dialog-command.js` and its command descriptor in the file `cli/source/config/config.js`, the entry with `names: ['dialog', 'dial', 'd']`
 
 The command `hugfc` is used to access to the web service hugging face.
