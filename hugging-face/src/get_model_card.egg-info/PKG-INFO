@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: get-model-card
+Version: 0.1.0
+Summary: CLI tool to fetch a Hugging Face Hub model card
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: huggingface_hub>=0.20.0
+
+# get-model-card
+
+Python CLI tool that fetches a Hugging Face Hub model card and prints it.
+
+## Install (editable)
+
+```bash
+pip install -e .
+```
+
+## Usage
+
+```bash
+get-model-card gpt2
+```
+
+If you need to access gated models, authenticate first (e.g. `huggingface-cli login`) or set `HF_TOKEN`.

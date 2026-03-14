@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "get-model-card"
+version = "0.1.0"
+description = "CLI tool to fetch a Hugging Face Hub model card"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "huggingface_hub>=0.20.0",
+]
+
+[project.scripts]
+get-model-card = "get_model_card.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

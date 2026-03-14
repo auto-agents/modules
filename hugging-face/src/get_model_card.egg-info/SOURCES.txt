@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/get_model_card/__init__.py
+src/get_model_card/__main__.py
+src/get_model_card/cli.py
+src/get_model_card.egg-info/PKG-INFO
+src/get_model_card.egg-info/SOURCES.txt
+src/get_model_card.egg-info/dependency_links.txt
+src/get_model_card.egg-info/entry_points.txt
+src/get_model_card.egg-info/requires.txt
+src/get_model_card.egg-info/top_level.txt

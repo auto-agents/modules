@@ -1,0 +1,2 @@
+[console_scripts]
+get-model-card = get_model_card.cli:main
