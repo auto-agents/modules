@@ -1,4 +1,4 @@
-### command: `hugfc`
+# command: `hugfc`
 
 Implements a new command named `hugfc`, according to the specification in file `modules/tasks/dev-com.md`. Write the result in the appropriate file in `modules/hugging-face/module/commands/` folder. 
 

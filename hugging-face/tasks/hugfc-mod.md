@@ -1,4 +1,4 @@
-### module: `hugging-face`
+# module: `hugging-face`
 
 Implements a new module named `hugging-face`, according to the specification in file `modules/tasks/dev-module.md`. Write the result in the appropriate files in the folder `modules/hugging-face/module/`. 
 
