@@ -1,7 +1,7 @@
 import path from 'path'
 import { spawn } from 'child_process'
 
-import Command from '../../../../cli/source/commands/command.js'
+import Command from '../../../../shared/src/commands/command.js'
 import { CommandRunErrorEvent, errorEvent } from '../../../../shared/src/data/events.js'
 
 export default class HugfcCommand extends Command {
