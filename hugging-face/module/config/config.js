@@ -1,5 +1,17 @@
 export default function config(cli) {
 	return {
+		modules: {
+			huggingFace: {
+				moduleId: 'huggingFace',
+				description: 'hugging face hub access module',
+				file: 'hugging-face-module.js',
+
+				autoLoad: false,
+				enabled: true,
+				isLoaded: false,
+				internal: false
+			}
+		},
 		cli: {
 			commands: [
 				{
