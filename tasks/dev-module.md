@@ -1,8 +1,13 @@
-# build an ingtegrable module for auto-agents/cli
+# build an integrable module for auto-agents/cli
 
 ## Overview
 
-This document describes how to implement a new module that can be integrated by the CLI tool in `auto-agents/cli` according to the module model specification. Modules are dynamically loadable extenions by the CLI application.
+This document describes how to implement a new module that can be integrated by the CLI tool in `auto-agents/cli` according to the module model specification. Modules are dynamically loadable extensions by the CLI application.
+
+Integrating a module consists in incorporate in the `auto-agents/cli` the following elements:
+- **configuration**: from `{moduleName}/module/config/config.js`
+- **commands**: from files named `{commandName}-command.js` in `{moduleName}/module/commands/`
+- **module class**: from file `{moduleName}-module.js` in `{moduleName}/module/module/`
 
 ## Module Structure
 
@@ -16,14 +21,14 @@ A module is defined by three main components:
 
 ## Step 1 : Create the module specification
 
-- A module is specified by `js properties` in the file `config/config.js` in the property `modules` 
+- A module is specified by `js properties` in the file `modules/{moduleName}/module/config/config.js` in the property `modules` 
 - the module specification object is defined as follows:
 
-Use existing models of command specifications from the file `auto-agents/cli/source/config/config.js` in property `cli.modules`
+Use existing models of command specifications as examples from the file `auto-agents/cli/source/config/config.js` in property `cli.modules`
 
-In this document, `ctx` and `this.ctx` refers to the content of the js object specified in `config.js` that is returned by the function `config(cli)`
+In this document, `ctx` and `this.ctx` refers to the content of the js object specified in `config.js` that is returned by the function `config(cli)`, and `{moduleName}` must be substituted by the module name (camel case)
 
-Add your command definition to the `cli.modules` object in `module/config/config.js` as follows:
+Add your module definition to the `cli.modules` object in `modules/{moduleName}/module/config/config.js` as follows:
 
 ```js
 modules: {
@@ -44,9 +49,17 @@ modules: {
 }
 ```
 
+where properties are:
+- **moduleId** : an unique module identifier. generally will be the same as the module name
+- **description** : a text that describe the module purposes
+- **autoLoad** : a boolean that indicates if the module must be loaded automatically or not at cli startup
+- **enabled** : a boolean that indicates indicates if the module has been loaded by the cli
+- **isLoaded** : a boolean that indicates if the module can be loaded by user or not. if it is internal only the cli can load it depdendings on his needs
+- **internal** : a boolean that indicates if the module can be loaded by user or not. if it is internal only the cli can load it depdendings on his needs, and the user can not load it manually using the cli commands (eg. `/module load {moduleName}`)
+
 ### Step 2: Implement the Module Class
 
-- a module file is stored in the `/modules` folder
+- a module class file is stored in the `modules/{moduleName}/module/` folder
 
 Create a default export class that follows this structure:
 
@@ -56,12 +69,15 @@ Create a default export class that follows this structure:
 - Capitalize the first letter after each removed hyphen
 - Example: `my-module-module.js` → `MyModuleModule`
 
+use this code example as pattern:
+
 ```js
 export default class MyModule {
 
-    constructor(ctx, config, outputContext, moduleSpec)
+    constructor(ctx, outputContext, moduleSpec)
         this.moduleSpec = moduleSpec
         this.ctx = ctx
+        this.outputContext = outputContext
     }
 
     /**
@@ -69,6 +85,7 @@ export default class MyModule {
      */
     async init() {
         // depends on each module
+        // ...
     }
 
     /**
@@ -97,5 +114,14 @@ export default class MyModule {
         await stopSrvAction.run()        
         */
     }
-
 ```
+
+where:
+- `MyClassName`:  the class name corresponding to the module name according to the naming conventions indicated above
+- `ctx`:  the configuration object provided by the file `config.js`
+- `moduleSpec`:  the module configuration object provided by the file `config.js`, in the property `modules.{moduleId}`
+- `outputContext`: the output context to be used by the module implementation for needs of output strings on display. this is an object of type `OutputContet` defined in the file `cli/source/data/output-context.js`
+
+Keep the commentaries as provided in the code example
+
+No additional registration or integration steps are required beyond the configuration and implementation described above.
