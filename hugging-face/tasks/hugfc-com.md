@@ -44,7 +44,7 @@ The command descriptor is given below:
         },
         allowPositionals: true
     },
-    file: 'hugfc-command.js'l
+    file: 'hugfc-command.js'
 }
 ```
 
