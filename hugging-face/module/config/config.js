@@ -6,7 +6,7 @@ export default function config(cli) {
 				description: 'hugging face hub access module',
 				file: 'hugging-face-module.js',
 
-				autoLoad: false,
+				autoLoad: true,
 				enabled: true,
 				isLoaded: false,
 				internal: false

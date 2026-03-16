@@ -74,7 +74,8 @@ use this code example as pattern:
 ```js
 export default class MyModule {
 
-    constructor(ctx, outputContext, moduleSpec)
+    constructor(ctx, config, outputContext, moduleSpec)
+        this.config = config
         this.specification = moduleSpec
         this.ctx = ctx
         this.outputContext = outputContext

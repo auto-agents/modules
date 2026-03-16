@@ -1,6 +1,7 @@
 export default class HuggingFaceModule {
 
-	constructor(ctx, outputContext, moduleSpec) {
+	constructor(ctx, config, outputContext, moduleSpec) {
+		this.config = config
 		this.specification = moduleSpec
 		this.ctx = ctx
 		this.outputContext = outputContext
