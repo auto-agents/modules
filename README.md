@@ -10,7 +10,7 @@
 
 ---
 
-**This repository contains plateforms dependents softwares modules that are used by Auto Agents CLI tool and agents**
+**This repository contains `plateforms dependents modules` and `auto agent cli extensions` that are used by Auto Agents CLI tool and agents**
 </td>
 <td>
 <img src="assets/agent-5.jfif" alt="Auto Agents" width="800px">
@@ -22,9 +22,9 @@
 
 available modules:
 
-- [speech](speech/README.md)
-- [Hugging Face](hugging-face/README.md)
-- voice recognition
+- [speech](speech/README.md) : browser based **`TTS`**
+- [Hugging Face](hugging-face/README.md) : access to **hugging face API**, get model cards and allow to search the huge hugging face dabatabse for detailed informations about **models**
+- voice recognition : browser based **`STT`** *(coming soon)*
 
 ---
 
