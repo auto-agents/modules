@@ -128,6 +128,10 @@ export default class HugfcCommand extends Command {
 				const optDir = this.getValue(com, args, argDir)
 				if (!this.checkParameter(com, argDir, optDir)) return
 
+				const argFilter = 'filter'
+				const optFilter = this.getValue(com, args, argDir)
+				if (!this.checkParameter(com, argDir, optFilter)) return
+
 				const options = {
 					sort: {
 						field: optSort,
@@ -221,7 +225,7 @@ export default class HugfcCommand extends Command {
 		const nbPages = Math.floor(count / cnt)
 
 		const i = (noPage - 1) * mod.config.pageSize
-		const j = (noPage - 1) * mod.config.pageSize + cnt //- 1
+		const j = (noPage - 1) * mod.config.pageSize + cnt
 
 		mod.table = {
 			table: t.slice(i, j),
@@ -361,8 +365,10 @@ export default class HugfcCommand extends Command {
 		['text-to-audio-video']: 'TTAV',
 		['image-to-audio-video']: 'ITAV',
 		['image-text-to-audio-video']: 'ITTAV',
+		['image-classification']: 'IMGCL',
 		['speech-language-model']: 'SLM',
 		['audio']: 'AU',
+		['audio-classification']: 'AU',
 		['pyannote-audio-pipeline']: 'AU',
 		['pyannote-audio']: 'AU',
 		['pyannote']: 'AU',
@@ -418,7 +424,7 @@ export default class HugfcCommand extends Command {
 		'VI': [
 			'VI', 'MM', 'IG', 'ITTT', 'ITV', 'ITI', 'IE',
 			'TTV', 'VTV', 'ITTV', 'ATV', 'VTA', 'TTAV',
-			'ITAV', 'ITTAV'
+			'ITAV', 'ITTAV', 'IMGCL'
 		],
 		'AU': [
 			'MM', 'TTS', 'STT', 'TTA', 'VTA', 'ATA', 'TTAV',
@@ -514,6 +520,17 @@ export default class HugfcCommand extends Command {
 			_cd |= grps.includes('CD')
 		})
 
+		const idt = id.split('-')
+		var b = null
+		for (var i = 0; i < idt.length; i++) {
+			if (b === null) {
+				const seg = idt[i]
+				if (seg[seg.length - 1] == 'B') {
+					b = seg.slice(0, seg.length - 1)
+				}
+			}
+		}
+
 		const cm = mod.config.theme.checkmark
 		const nv = null
 		const idMaxLen = mod.config.layout.idMaxLen
@@ -522,7 +539,7 @@ export default class HugfcCommand extends Command {
 		return {
 			idx: idx,
 			id: id,
-			B: null,
+			B: b,
 			dn: modelInfo.downloads,
 			lk: modelInfo.likes,
 			TL: _tl ? cm : nv,

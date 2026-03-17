@@ -127,7 +127,47 @@ export default function config() {
 								required: false,
 								short: 'd',
 								description: "the direction of the sort. use with 'fetch'"
-
+							},
+							filter: {
+								type: 'string',
+								required: false,
+								default: 'id',
+								allowedValues: [
+									{
+										value: 'id',
+										description: 'model id'
+									},
+									{
+										value: 'B',
+										description: 'milliards of parameters in the model'
+									},
+									{
+										value: 'TL',
+										description: 'model enable tools'
+									},
+									{
+										value: 'TH',
+										description: 'model enable think'
+									},
+									{
+										value: 'VI',
+										description: 'model enable vision or image/video'
+									},
+									{
+										value: 'AU',
+										description: 'model enable audio,speech,recognition,...'
+									},
+									{
+										value: 'CD',
+										description: 'model enable coding'
+									},
+									{
+										value: 'tags',
+										description: 'model tags'
+									}
+								],
+								short: 'f',
+								description: "the name of the field on which a filter must be applied. use with 'fetch'"
 							}
 						},
 						allowPositionals: true
