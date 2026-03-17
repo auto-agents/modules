@@ -129,13 +129,14 @@ export default class HugfcCommand extends Command {
 				if (!this.checkParameter(com, argDir, optDir)) return
 
 				const argFilter = 'filter'
-				const optFilter = this.getValue(com, args, argDir)
-				if (!this.checkParameter(com, argDir, optFilter)) return
+				const optFilter = this.getValue(com, args, argFilter)
+				if (!this.checkParameter(com, argFilter, optFilter)) return
 
 				const options = {
 					sort: {
 						field: optSort,
-						dir: optDir
+						dir: optDir,
+						filter: optFilter
 					}
 				}
 

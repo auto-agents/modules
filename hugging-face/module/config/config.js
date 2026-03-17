@@ -131,7 +131,7 @@ export default function config() {
 							filter: {
 								type: 'string',
 								required: false,
-								default: 'id',
+								default: '',
 								allowedValues: [
 									{
 										value: 'id',
