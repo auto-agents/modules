@@ -6,6 +6,7 @@ import { renderMd } from '../../../../shared/src/utils/decorators.js'
 import { Table } from 'console-table-printer'
 import chalk from 'chalk'
 import { CommandKeyboardCaptureReleaseEvent, KeyboardCaptureRequestEvent, RunCommandEvent } from '../../../../shared/src/data/events.js'
+import wildcard from 'wildcard'
 
 export default class HugfcCommand extends Command {
 
@@ -131,18 +132,25 @@ export default class HugfcCommand extends Command {
 				const argFilter = 'filter'
 				const optFilter = this.getValue(com, args, argFilter)
 				if (!this.checkParameter(com, argFilter, optFilter)) return
+				const hasFilter = optFilter.length > 0
+
+				if (hasFilter && !name) {
+					this.emitCommandError('name is required when using option filter')
+					return
+				}
 
 				const options = {
 					sort: {
 						field: optSort,
 						dir: optDir,
-						filter: optFilter
-					}
+					},
+					filter: optFilter,
+					name: name
 				}
 
 				this.setTable(json, options)
 
-				if (name) {
+				if (name && !hasFilter) {
 					const found = mod.models.find(m => m?.id === name)
 					if (found) {
 						mod.models = [found]
@@ -168,7 +176,20 @@ export default class HugfcCommand extends Command {
 		var cnt = Math.min(mod.config.pageSize, count)
 		const nbPages = Math.ceil(count / cnt) + 1
 
-		const t = this.toLittleArray(json, 0, count)
+		var t = this.toLittleArray(json, 0, count)
+
+		// filter
+
+		if (options.filter.length > 0) {
+			const t2 = []
+			for (var i = 0; i < t.length; i++) {
+				const r = t[i]
+				const v = r[options.filter]
+				if (wildcard(options.name, v))
+					t2.push(r)
+			}
+			t = t2
+		}
 
 		// sort
 

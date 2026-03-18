@@ -60,7 +60,7 @@ export default function config() {
 								type: 'string',
 								required: false,
 								short: 'n',
-								description: "the name of the model. required for action 'card'"
+								description: "the name of the model. required for action 'card' or --filter"
 							},
 							sort: {
 								type: 'string',
@@ -74,10 +74,6 @@ export default function config() {
 									{
 										value: 'B',
 										description: 'milliards of parameters'
-									},
-									{
-										value: 'dn',
-										description: 'downloads'
 									},
 									{
 										value: 'dn',
