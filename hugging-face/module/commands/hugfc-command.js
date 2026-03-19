@@ -402,7 +402,7 @@ export default class HugfcCommand extends Command {
 		['reasoning']: 'R',
 		['tool-calling']: 'TOOL',
 		['instruct']: 'INSTR',
-		['code']: 'COD',
+		['code']: 'CD',
 		['coder']: 'COD',
 		['coding']: 'COD',
 		['custom_code']: 'COD',
@@ -489,7 +489,7 @@ export default class HugfcCommand extends Command {
 	kwGroups = {
 
 		'TL': [
-			'IF', 'TOOL', 'ER', 'INSTR'
+			'IF', 'TOOL', 'INSTR'
 		],
 		'TH': [
 			'COT', 'R', 'DR', 'PROB', 'INSTR'
