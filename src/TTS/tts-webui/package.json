@@ -1,0 +1,50 @@
+{
+  "name": "tts-webui",
+  "version": "1.0.0",
+  "description": "module for Gradio + React WebUI with extensions for ACE-Step, Kimi Audio, Piper TTS, GPT-SoVITS, CosyVoice, XTTSv2, DIA, Kokoro, OpenVoice, ParlerTTS, Stable Audio, MMS, StyleTTS2, MAGNet, AudioGen, MusicGen, Tortoise, RVC, Vocos, Demucs, SeamlessM4T, and Bark!",
+  "keywords": [
+    "Gradio",
+    "+",
+    "React",
+    "WebUI",
+    "with",
+    "extensions",
+    "for",
+    "ACE-Step",
+    "Kimi",
+    "Audio",
+    "Piper",
+    "TTS",
+    "GPT-SoVITS",
+    "CosyVoice",
+    "XTTSv2",
+    "DIA",
+    "Kokoro",
+    "OpenVoice",
+    "ParlerTTS",
+    "Stable",
+    "Audio",
+    "MMS",
+    "StyleTTS2",
+    "MAGNet",
+    "AudioGen",
+    "MusicGen",
+    "Tortoise",
+    "RVC",
+    "Vocos",
+    "Demucs",
+    "SeamlessM4T",
+    "and",
+    "Bark!"
+  ],
+  "license": "GPL-3.0-or-later",
+  "author": "franck gaspoz",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@gradio/client": "^2.1.0"
+  }
+}
