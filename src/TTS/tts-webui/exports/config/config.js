@@ -17,6 +17,7 @@ export default function config() {
 					port: 7770,
 					apis: {
 						kokoroTTS: {
+							bridgeFile: 'kokoro-tts.js',
 							description: '',
 							paths: {
 								speak: {
