@@ -2,6 +2,7 @@
 import { existsSync } from "fs";
 import { join, dirname } from 'path';
 import { toJson } from "../../../../../../shared/src/utils/utils";
+import SpeakerError from "../../../../../../shared/src/data/speaker-error";
 /*import ActionController from "../controllers/action-controller.js";
 import SpinnerService from "../services/spinner-service.js";
 import Status from '../../../shared/src/utils/status.js'
@@ -31,39 +32,58 @@ export default class TTSWebUI {
 	 */
 	async init() {
 
-		const o = this.outputContext.output
-		const margin = ' '.repeat(this.outputContext.margin + this.outputContext.marginBase)
-		const margin2 = ' '.repeat(margin.length + this.outputContext.marginBase)
-		const apiId = this.apiId
+		try {
+			const o = this.outputContext.output
+			const margin = ' '.repeat(this.outputContext.margin + this.outputContext.marginBase)
+			const margin2 = ' '.repeat(margin.length + this.outputContext.marginBase)
+			const apiId = this.apiId
 
-		//o.appendLine(toJson(this.config.agent.speak))
+			//o.appendLine(toJson(this.config.agent.speak))
 
-		o.newLine()
-		o.appendLine(margin + `~ loading ${this.desc} API bridge for: "${apiId}"`)
+			o.newLine()
+			o.appendLine(margin + `~ loading ${this.desc} API bridge for: "${apiId}"`)
 
-		if (!apiId)
-			throw new Error('api is not defined')
-		const apiConfig = this.specification.config.apis[apiId]
-		if (!apiConfig)
-			throw new Error('api not found: ' + apiId)
-		const apiBridgeFilename = apiConfig.bridgeFile
-		if (!apiBridgeFilename)
-			throw new Error('api bridge file not defined')
+			if (!apiId)
+				throw new Error('api is not defined')
+			const apiConfig = this.specification.config.apis[apiId]
+			if (!apiConfig)
+				throw new Error('api not found: ' + apiId)
+			const apiBridgeFilename = apiConfig.bridgeFile
+			if (!apiBridgeFilename)
+				throw new Error('api bridge file not defined')
 
-		const apiBridgePath = join(
-			dirname(this.specification.file),
-			'..',
-			'..',
-			'src',
-			apiBridgeFilename
-		)
-		// load bridge
+			const apiBridgePath = join(
+				dirname(this.specification.file),
+				'..',
+				'..',
+				'src',
+				apiBridgeFilename
+			)
+			this.config.agent.TTSWebUIAPIBridgeName = apiBridgeFilename
 
-		o.appendLine(margin2 + `- setup API bridge ${apiBridgePath}`)
-		if (!existsSync(apiBridgePath))
-			throw new Error('bridge file not found')
+			// load bridge
 
-		o.appendLine(margin2 + `  api bridge loaded ✔`)
+			o.appendLine(margin2 + `- setup API bridge ${apiBridgePath}`)
+
+			if (!existsSync(apiBridgePath))
+				throw new Error('bridge file not found')
+
+			const bridge = require(apiBridgeFilename)
+			try {
+				this.apiBridge = new bridge.default({
+					ctx: this.ctx,
+					config: this.config,
+					apiConfig: apiConfig,
+					baseUrl: this.config.baseUrl.replace('{port}', this.config.port)
+				})
+				o.appendLine(margin2 + `  api bridge loaded ✔`)
+			}
+			catch (err) {
+				throw err
+			}
+		} catch (err0) {
+			throw SpeakerError.fromErr('load fail', err0)
+		}
 	}
 
 	/**
@@ -75,17 +95,28 @@ export default class TTSWebUI {
 	}
 
 	/* ---- TTS module interface impl ---- */
+	/* ---- rely on the API bridge ---- */
 
 	async speak(text, voice = null) {
+		this.#assertSpeakModuleImplAvailable()
 	}
 
 	async waitIdle(timeout) {
+		this.#assertSpeakModuleImplAvailable()
 	}
 
 	async shetUp() {
+		this.#assertSpeakModuleImplAvailable()
+	}
+
+	getPreferredVoices(preferredVoices) {
 	}
 
 	/* <---- ---- */
+
+	#assertSpeakModuleImplAvailable() {
+		if (!this.agent.bridge) throw new SpeakerError('TTS module implementation not available (null)')
+	}
 
 	#getOutput(outputContext) {
 		const oc = outputContext || this.outputContext
