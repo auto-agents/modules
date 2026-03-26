@@ -93,6 +93,7 @@ export default class TTSWebUI {
 		}
 	}
 
+	// TODO: in config + a module or a component
 	async playSoundWithShell(filepath) {
 		var tool = this.ctx.shell.playSound[
 			this.ctx.shell.platform
