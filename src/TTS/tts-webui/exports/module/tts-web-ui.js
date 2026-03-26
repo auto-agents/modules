@@ -117,9 +117,9 @@ export default class TTSWebUI {
 			//throw new Error(error)
 		})
 
-		player.on('spawn', () => {
+		/*player.on('spawn', () => {
 			console.log('spawn')
-		})
+		})*/
 
 		player.unref()
 	}
