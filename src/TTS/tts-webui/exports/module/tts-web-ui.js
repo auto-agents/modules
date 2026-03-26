@@ -28,6 +28,9 @@ export default class TTSWebUI {
 		this.ctx = ctx
 		this.outputContext = outputContext
 		this.apiId = this.config.agent?.speak?.config?.api
+
+		const util = require('node:util');
+		this.exec = util.promisify(require('node:child_process').exec);
 	}
 
 	/**
@@ -98,13 +101,15 @@ export default class TTSWebUI {
 		var tool = this.ctx.shell.playSound[
 			this.ctx.shell.platform
 		]
-		if (!tool) throw new Error('shell sound player not available')
+		if (!tool) throw SpeakerError.fromMessage('shell sound player not available')
 
 		filepath = filepath.replaceAll('"', '\\"')
 		tool = tool.replace('{filePath}', filepath)
 		//tool = tool.replaceAll('\\', "\\\\")
 
-		const player = spawn(
+		await (this.exec(tool))
+
+		/*const player = spawn(
 			tool,
 			{
 				shell: true,
@@ -115,13 +120,13 @@ export default class TTSWebUI {
 		player.on('error', (error) => {
 			console.error(error)
 			//throw new Error(error)
-		})
+		})*/
 
 		/*player.on('spawn', () => {
 			console.log('spawn')
 		})*/
 
-		player.unref()
+		//player.unref()	// use to unwait
 	}
 
 	/**
@@ -137,7 +142,7 @@ export default class TTSWebUI {
 
 	async speak(text, voice = null) {
 		this.#assertSpeakModuleImplAvailable()
-		console.log(`[TTS:${this.apiId}]`)
+		//console.log(`[TTS:${this.apiId}]`)
 		return await this.apiBridge.speak(text, voice)
 	}
 
