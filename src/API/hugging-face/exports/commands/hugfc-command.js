@@ -100,7 +100,14 @@ export default class HugfcCommand extends Command {
 
 				let res = null
 				try {
-					res = await fetch(url)
+					res = await fetch(url,
+						{
+							headers: {
+								['User-Agent']: this.ctx.cli.network.userAgent,
+								['Content-Type']: 'application/json'
+							}
+						}
+					)
 				} catch (err) {
 					this.emitCommandError(err?.message || String(err))
 					return

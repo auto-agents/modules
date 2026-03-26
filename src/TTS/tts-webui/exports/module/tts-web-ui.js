@@ -3,6 +3,7 @@ import { existsSync } from "fs";
 import { join, dirname } from 'path';
 import { toJson } from "../../../../../../shared/src/utils/utils";
 import SpeakerError from "../../../../../../shared/src/data/speaker-error";
+import { CommandRunErrorEvent } from "../../../../../../shared/src/data/events";
 /*import ActionController from "../controllers/action-controller.js";
 import SpinnerService from "../services/spinner-service.js";
 import Status from '../../../shared/src/utils/status.js'
@@ -10,6 +11,8 @@ import utils, { addServer, removeServer, toJson } from '../../../shared/src/util
 import Server from '../../../shared/src/data/server.js';
 import SpeakerError from '../../../shared/src/data/speaker-error.js';
 */
+import { spawn } from 'child_process'
+
 export default class TTSWebUI {
 
 	desc = 'TTS-WebUI module'
@@ -70,14 +73,17 @@ export default class TTSWebUI {
 
 			const bridge = require(apiBridgePath)
 			try {
-				this.apiBridge = new bridge.default({
-					ctx: this.ctx,
-					config: this.config,
-					apiConfig: apiConfig,
-					baseUrl: this.config.baseUrl.replace('{port}', this.config.port)
-				})
+				this.apiBridge = new bridge.default(
+					this.ctx,
+					this.config,
+					apiConfig,
+					this.config.baseUrl.replace('{port}', this.config.port)
+				)
 				this.config.agent.apiBridge = this.apiBridge
 				o.appendLine(margin2 + `  api bridge loaded ✔`)
+
+				this.config.playSoundFunc =
+					async (f) => await this.playSoundWithShell(f)
 			}
 			catch (err) {
 				throw err
@@ -85,6 +91,36 @@ export default class TTSWebUI {
 		} catch (err0) {
 			throw SpeakerError.fromErr('load fail', err0)
 		}
+	}
+
+	async playSoundWithShell(filepath) {
+		var tool = this.ctx.shell.playSound[
+			this.ctx.shell.platform
+		]
+		if (!tool) throw new Error('shell sound player not available')
+
+		filepath = filepath.replaceAll('"', '\\"')
+		tool = tool.replace('{filePath}', filepath)
+		//tool = tool.replaceAll('\\', "\\\\")
+
+		const player = spawn(
+			tool,
+			{
+				shell: true,
+				stdio: 'inherit',
+				detached: true
+			})
+
+		player.on('error', (error) => {
+			console.error(error)
+			//throw new Error(error)
+		})
+
+		player.on('spawn', () => {
+			console.log('spawn')
+		})
+
+		player.unref()
 	}
 
 	/**
@@ -100,7 +136,8 @@ export default class TTSWebUI {
 
 	async speak(text, voice = null) {
 		this.#assertSpeakModuleImplAvailable()
-		return await this.apiBridge.speek(text, voice)
+		console.log(`[TTS:${this.apiId}]`)
+		return await this.apiBridge.speak(text, voice)
 	}
 
 	async waitIdle(timeout) {
