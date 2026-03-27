@@ -36,6 +36,7 @@
 - [tts-browser](https://github.com/auto-agents/modules/blob/main/speech) : **Text To Speech** with any browser implementing `WebSpeechAPI`
 - [tts-webui](https://github.com/auto-agents/modules/blob/main/src/TTS/tts-webui) : supports **Text To Speech** from softwares that can be installed in **`TTS WebUI`** [https://github.com/rsxdalv/TTS-WebUI](https://github.com/rsxdalv/TTS-WebUI), throught the **Gradio** API. Currently the following TTS providers are available in *auto-agents* :
     - **kokoro-tts**
+    - **kitten-tts**
 
 #### STT
 

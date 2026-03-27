@@ -3,7 +3,7 @@ export default function config() {
 		modules: {
 			TTSWebUI: {
 				moduleId: 'TTSWebUI',
-				description: 'module for Gradio + React WebUI with extensions for ACE-Step, Kimi Audio, Piper TTS, GPT-SoVITS, CosyVoice, XTTSv2, DIA, Kokoro, OpenVoice, ParlerTTS, Stable Audio, MMS, StyleTTS2, MAGNet, AudioGen, MusicGen, Tortoise, RVC, Vocos, Demucs, SeamlessM4T, and Bark!',
+				description: 'module for TTS WebUI. currently supports extensions for Kokoro, Kitten',
 				file: 'tts-web-ui-module.js',
 				category: 'TTS',
 
