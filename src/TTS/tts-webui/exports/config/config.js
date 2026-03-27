@@ -17,8 +17,8 @@ export default function config(ctx) {
 				config: {
 					baseUrl: 'http://127.0.0.1:{port}',
 					port: 7770,
-					dumpSearchReferenceAudio: true,
-					dumpImportReferenceAudio: true,
+					dumpSearchReferenceAudio: false,
+					dumpImportReferenceAudio: false,
 					paths: {
 						basePath: 'E:\\DEV\\repos\\auto-agents-ext\\tts-webui-installer',
 						voices: [
