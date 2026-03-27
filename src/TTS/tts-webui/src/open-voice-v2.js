@@ -34,6 +34,8 @@ export default class OpenVoiceV2Bridge extends BridgeTTSBase {
             reference_audio: this.referenceAudioData,
             language_code: agentPars.language_code
                 || pars.language_code.default,
+            speed: agentPars.speed
+                || pars.speed.default,
             seed:
                 agentPars.seed
                 || pars.seed.default

@@ -204,6 +204,10 @@ export default function config(ctx) {
 											possibleValues: ['en', 'fr'],
 											description: 'language code'
 										},
+										speed: {
+											default: 1,
+											description: 'The input value that is provided in the "Speed" Slider component.'
+										},
 										seed: {
 											default: 2044339735,
 											description: 'The input value that is provided in the "parameter_482" Textbox component.'
