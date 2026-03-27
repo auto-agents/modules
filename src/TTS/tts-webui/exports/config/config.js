@@ -1,4 +1,6 @@
-export default function config() {
+import path from 'path'
+
+export default function config(ctx) {
 	return {
 		modules: {
 			TTSWebUI: {
@@ -15,10 +17,20 @@ export default function config() {
 				config: {
 					baseUrl: 'http://127.0.0.1:{port}',
 					port: 7770,
+					dumpSearchReferenceAudio: true,
+					dumpImportReferenceAudio: true,
 					paths: {
 						basePath: 'E:\\DEV\\repos\\auto-agents-ext\\tts-webui-installer',
 						voices: [
-							'voices/chatterbox'
+							// in modules path
+							path.join(
+								process.cwd(),
+								ctx.paths.importModules,
+								'TTS',
+								'voices'
+							),
+							// path in basePath
+							'voices/chatterbox',
 						]
 					},
 					apis: {

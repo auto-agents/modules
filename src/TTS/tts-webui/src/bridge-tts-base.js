@@ -101,6 +101,10 @@ export default class BridgeTTSBase {
             if (!res) {
                 if (!path.isAbsolute(p))
                     p = path.join(basePath, p)
+
+                if (this.config.dumpSearchReferenceAudio)
+                    console.log('search ref audio in: ' + p)
+
                 const fp = path.join(p, referenceAudio)
                 // scan the path for file
                 res = existsSync(fp) ? fp : null
@@ -120,6 +124,10 @@ export default class BridgeTTSBase {
         if (!path.isAbsolute(referenceAudio))
             referenceAudio = this.findReferenceAudioFile(referenceAudio)
         if (!referenceAudio) throw SpeakerError.fromMessage('reference audio file not found: ' + referenceAudio)
+
+        if (this.config.dumpImportReferenceAudio)
+            console.log('import reference audio file: ' + referenceAudio)
+
         const d = readFileSync(referenceAudio)
         const b = new Blob(d)
 
