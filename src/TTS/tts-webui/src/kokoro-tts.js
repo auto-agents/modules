@@ -35,27 +35,43 @@ export default class KokoroTTSBridge {
                 runStack,
                 100)
             this.stackRunning = true
-            console.log(this.apiConfig)
         }
 
         try {
             const t = splitSentence(this.ctx, text)
+            console.log(t)
+
             for (var i = 0; i < t.length; i++) {
 
                 const tx = t[i]
                 if (this.ctx.dialoger.sentenceSpliter.dumpSplits)
                     console.log(tx)
 
+                const cnf = this.apiConfig.paths.speak
+                const pars = cnf.parameters
+                const agentPars = this.config.agent.speak.config
+
                 const client = await Client.connect(this.baseUrl)
                 const result = await client.predict(
-                    this.apiConfig.paths.speak.uri,
+                    cnf.uri,
                     {
                         text: tx,
-                        voice: "af_heart",
-                        speed: 1,
-                        use_gpu: true,
-                        model_name: "hexgrad/Kokoro-82M",
-                        seed: 2044339735,
+                        voice:
+                            this.getPreferredVoices(
+                                this.config.agent.speak.preferredVoices)
+                            || pars.voice.default,
+                        speed:
+                            agentPars.speed
+                            || pars.speed.default,
+                        use_gpu:
+                            agentPars.use_gpu
+                            || pars.use_gpu.default,
+                        model_name:
+                            agentPars.model_name
+                            || pars.model_name.default,
+                        seed:
+                            agentPars.seed
+                            || pars.seed.default,
                     });
                 saveToTemp(this.ctx, 'tts.json', toJson(result))
                 const filepath = result.data[0].path
@@ -78,6 +94,7 @@ export default class KokoroTTSBridge {
     }
 
     getPreferredVoices(preferredVoices) {
+        return preferredVoices[0]
     }
 
     /* <---- ---- */

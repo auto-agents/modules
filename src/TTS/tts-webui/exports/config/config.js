@@ -4,7 +4,7 @@ export default function config() {
 			TTSWebUI: {
 				moduleId: 'TTSWebUI',
 				description: 'module for Gradio + React WebUI with extensions for ACE-Step, Kimi Audio, Piper TTS, GPT-SoVITS, CosyVoice, XTTSv2, DIA, Kokoro, OpenVoice, ParlerTTS, Stable Audio, MMS, StyleTTS2, MAGNet, AudioGen, MusicGen, Tortoise, RVC, Vocos, Demucs, SeamlessM4T, and Bark!',
-				file: 'tts-web-ui.js',
+				file: 'tts-web-ui-module.js',
 				category: 'TTS',
 
 				autoLoad: false,
@@ -31,19 +31,19 @@ export default function config() {
 											description: 'The input value that is provided in the "Voice" Dropdown component.'
 										},
 										speed: {
-											sample: 1,
+											default: 1,
 											description: 'The input value that is provided in the "Speed" Slider component.'
 										},
 										use_gpu: {
-											sample: 'true',
+											default: true,
 											description: 'The input value that is provided in the "Hardware" Dropdown component.'
 										},
 										model_name: {
-											sample: 'hexgrad/Kokoro-82M',
+											default: 'hexgrad/Kokoro-82M',
 											description: 'The input value that is provided in the "Model" Dropdown component.'
 										},
 										seed: {
-											default: '-1',
+											default: 2044339735,
 											description: 'The input value that is provided in the "parameter_482" Textbox component.'
 										}
 									},
