@@ -1,7 +1,15 @@
 import path from 'path'
 
 export default function config(ctx) {
+
 	return {
+		cli: {
+			tempsToClean: [
+				// add you settings here
+				"E:\\DEV\repos\\auto-agents-ext\\tts-webui-installer\\outputs",
+				"C:\\Users\\franc\\AppData\\Local\\Temp\\gradio\\"
+			]
+		},
 		modules: {
 			TTSWebUI: {
 				moduleId: 'TTSWebUI',
