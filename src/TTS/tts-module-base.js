@@ -25,6 +25,8 @@ export default class TTSModuleBase {
     }
 
     #loadSpeakPreProcessors() {
+        if (!this.config.agent.speak.config)
+            this.config.agent.speak.config = {}
         if (!this.config.agent.speak.config.preProcessors) {
             this.config.agent.speak.config.preProcessors = []
         }

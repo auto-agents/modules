@@ -61,7 +61,7 @@ export default class BridgeTTSBase {
 
                 const cnf = this.apiConfig.paths.speak
                 const pars = cnf.parameters
-                const agentPars = this.config.agent.speak.config
+                const agentPars = this.config.agent.speak.config || {}
 
                 const client = await Client.connect(this.baseUrl)
 
