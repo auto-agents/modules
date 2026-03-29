@@ -9,12 +9,17 @@ export default class ItalicRemover {
         var i = 0
         var x0 = -1
         const sym = '*'
+        const cite = '"'
+        const ap_l = '('
+        const ap_r = ')'
         var r = ''
         while (i < text.length) {
             const pc = i > 0 ? text[i - 1] : null
             const c = text[i]
             const nc = i < text.length - 1 ? text[i + 1] : null
-            if (c == sym && pc != sym && nc != sym) {
+            if (c == sym
+                && pc != sym && pc != cite && pc != ap_r && pc != ap_l
+                && nc != sym && nc != cite && nc != ap_r && nc != ap_l) {
 
                 if (x0 == -1) {
 
