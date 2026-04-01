@@ -78,6 +78,7 @@ export default class TTSWebUI extends TTSModuleBase {
 				this.config.agent.apiBridge = this.apiBridge
 				o.appendLine(margin2 + `  api bridge loaded ✔`)
 
+				// TODO: load play sound mobile from config
 				this.config.playSoundFunc =
 					async (f) => await this.playSoundWithShell(f)
 			}

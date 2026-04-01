@@ -27,8 +27,10 @@ export default function config(ctx) {
 					port: 7770,
 					dumpSearchReferenceAudio: false,
 					dumpImportReferenceAudio: false,
+					// todo: load module import from this module
 					soundPlayerModule: 'Sound/shell-player',
 					paths: {
+						// todo: dynamic path
 						basePath: 'E:\\DEV\\repos\\auto-agents-ext\\tts-webui-installer',
 						voices: [
 							// in modules path
