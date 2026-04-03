@@ -77,6 +77,7 @@ export default class BridgeTTSBase {
 
                 this.speakStack.addTask(
                     task(
+                        'speak',
                         `${this.name}: speak`,
                         async () => await this.config.playSoundFunc(filepath)
                     ))
