@@ -27,6 +27,7 @@ export default function config(ctx) {
 					port: 7770,
 					dumpSearchReferenceAudio: false,
 					dumpImportReferenceAudio: false,
+					autoCleanupOutput: true,
 					// todo: load plugin import from this plugin
 					soundPlayerPlugin: 'Sound/shell-player',
 					paths: {

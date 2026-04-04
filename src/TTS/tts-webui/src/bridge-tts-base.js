@@ -4,6 +4,7 @@ import SpeakerError from "../../../../../shared/src/data/speaker-error";
 import { FifoStack, task } from "../../../../../shared/src/utils/fifo-stack";
 import path from 'path'
 import { existsSync, readFileSync } from 'fs'
+import { rm } from "fs/promises";
 
 export default class BridgeTTSBase {
 
@@ -73,13 +74,25 @@ export default class BridgeTTSBase {
                 })
 
                 saveToTemp(this.ctx, 'tts.json', toJson(result))
-                const filepath = result.data[0].path
+                const audio_filepath = result.data[0].path
+
+                const gradio_gen_folder = path.dirname(audio_filepath)
+                const ttswebui_gen_folder = result.data.length >= 3 ? path.join(
+                    this.config.paths.basePath,
+                    result.data[2]
+                ) : null
 
                 this.speakStack.addTask(
                     task(
                         'speak',
                         `${this.name}: speak`,
-                        async () => await this.config.playSoundFunc(filepath)
+                        async () => {
+                            await this.config.playSoundFunc(audio_filepath)
+                            if (this.config.autoCleanupOutput) {
+                                rm(gradio_gen_folder, { recursive: true, force: true })
+                                rm(ttswebui_gen_folder, { recursive: true, force: true })
+                            }
+                        }
                     ))
             }
         } catch (err) {

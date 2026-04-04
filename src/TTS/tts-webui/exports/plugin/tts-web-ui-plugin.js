@@ -1,16 +1,8 @@
-//import cliSpinners from 'cli-spinners';
 import { existsSync } from "fs";
 import { join, dirname } from 'path';
 import { toJson } from "../../../../../../shared/src/utils/utils";
 import SpeakerError from "../../../../../../shared/src/data/speaker-error";
 import { CommandRunErrorEvent } from "../../../../../../shared/src/data/events";
-/*import ActionController from "../controllers/action-controller.js";
-import SpinnerService from "../services/spinner-service.js";
-import Status from '../../../shared/src/utils/status.js'
-import utils, { addServer, removeServer, toJson } from '../../../shared/src/utils/utils.js'
-import Server from '../../../shared/src/data/server.js';
-import SpeakerError from '../../../shared/src/data/speaker-error.js';
-*/
 import { spawn } from 'child_process'
 import TTSPluginBase from "../../../tts-plugin-base";
 
