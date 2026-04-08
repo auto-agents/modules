@@ -65,8 +65,8 @@ export default class BridgeTTSBase {
 
                 if (!this.shetUpNow) {
                     const tx = t[i]
-                    if (this.ctx.dialoger.sentenceSpliter.dumpSplits)
-                        console.log(tx)
+                    //if (this.ctx.dialoger.sentenceSpliter.dumpSplits)
+                    //console.warn(tx)
 
                     const cnf = this.apiConfig.paths.speak
                     const pars = cnf.parameters
