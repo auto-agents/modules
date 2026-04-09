@@ -65,15 +65,17 @@ export default class BridgeTTSBase {
 
     async speak(text, voice = null, options = null) {
         this.pre_speak()
-        this.waitStack.addTask(
-            task(
-                'speak',
-                `${this.name}: speak`,
-                async () => {
-                    //console.log('** ' + options?.eventId + ',' + options?.chunkId + ',' + options?.splitId + ': ' + text)
-                    await this.#speak(text, voice, options)
-                }
-            ))
+        if (options?.noAwait)
+            this.waitStack.addTask(
+                task(
+                    'speak',
+                    `${this.name}: speak`,
+                    async () => {
+                        await this.#speak(text, voice, options)
+                    }
+                ))
+        else
+            await this.#speak(text, voice, options)
     }
 
     async #speak(text, voice = null, options = null) {
@@ -81,8 +83,6 @@ export default class BridgeTTSBase {
             const m = this.config.agent.TTSPlugin
             text = m.runPreProcessors(text)
             const t = m.getSplits(text)
-
-            //console.log(options, text)
 
             for (var i = 0; i < t.length; i++) {
 
@@ -94,8 +94,6 @@ export default class BridgeTTSBase {
                     const agentPars = this.config.agent.speak.config || {}
 
                     const client = await Client.connect(this.baseUrl)
-
-                    //console.warn('---- ' + options?.eventId + ',' + options?.chunkId + ',' + options?.splitId + ':' + i, tx)
 
                     const result = await client.predict(
                         cnf.uri,
@@ -118,8 +116,6 @@ export default class BridgeTTSBase {
                             'tts-speak',
                             `${this.name}: tts-speak`,
                             async () => {
-
-                                //console.warn(options?.eventId + ',' + options?.chunkId + ',' + options?.splitId + ':' + i + ': ' + tx)
 
                                 await this.config.playSoundFunc(audio_filepath)
                                 if (this.config.autoCleanupOutput) {
