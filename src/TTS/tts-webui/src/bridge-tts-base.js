@@ -10,10 +10,13 @@ export default class BridgeTTSBase {
 
     stackRunning = false
     name = null
-    speakStackRunDelay = 100
+    speakStackRunDelay = 50
+    waitStackRunDelay = 50
     referenceAudioPath = null
     referenceAudioData = null
     shetUpNow = false
+    speakStack = null
+    waitStack = null
 
     /**
          * new instance
@@ -28,17 +31,24 @@ export default class BridgeTTSBase {
         this.apiConfig = apiConfig
         this.baseUrl = baseUrl
         this.name = this.config.agent.TTSApiId
-        this.speakStack = new FifoStack(`${this.name} stack`, ctx, [], false)
+        this.speakStack = new FifoStack(`${this.name} speak stack`, ctx, [], false)
+        this.waitStack = new FifoStack(`${this.name} wait stack`, ctx, [], false)
     }
 
     pre_speak() {
         if (!this.stackRunning) {
-            const runStack = async () => {
+            const runSpeakStack = async () => {
                 await this.speakStack.processTaskes()
             }
             setTimeout(
-                runStack,
+                runSpeakStack,
                 this.speakStackRunDelay)
+            const runWaitStack = async () => {
+                await this.waitStack.processTaskes()
+            }
+            setTimeout(
+                runWaitStack,
+                this.waitStackRunDelay)
             this.stackRunning = true
         }
     }
@@ -50,29 +60,42 @@ export default class BridgeTTSBase {
     async shetUp() {
         if (!this.speakStack) return
         this.shetUpNow = true
-        await this.speakStack.clearTasks()
+        await this.#clearTasks()
     }
 
-    async speak(text, voice = null) {
+    async speak(text, voice = null, options = null) {
         this.pre_speak()
+        this.waitStack.addTask(
+            task(
+                'speak',
+                `${this.name}: speak`,
+                async () => {
+                    //console.log('** ' + options?.eventId + ',' + options?.chunkId + ',' + options?.splitId + ': ' + text)
+                    await this.#speak(text, voice, options)
+                }
+            ))
+    }
 
+    async #speak(text, voice = null, options = null) {
         try {
             const m = this.config.agent.TTSPlugin
             text = m.runPreProcessors(text)
             const t = m.getSplits(text)
 
+            //console.log(options, text)
+
             for (var i = 0; i < t.length; i++) {
 
                 if (!this.shetUpNow) {
                     const tx = t[i]
-                    //if (this.ctx.dialoger.sentenceSpliter.dumpSplits)
-                    //console.warn(tx)
 
                     const cnf = this.apiConfig.paths.speak
                     const pars = cnf.parameters
                     const agentPars = this.config.agent.speak.config || {}
 
                     const client = await Client.connect(this.baseUrl)
+
+                    //console.warn('---- ' + options?.eventId + ',' + options?.chunkId + ',' + options?.splitId + ':' + i, tx)
 
                     const result = await client.predict(
                         cnf.uri,
@@ -92,9 +115,12 @@ export default class BridgeTTSBase {
 
                     this.speakStack.addTask(
                         task(
-                            'speak',
-                            `${this.name}: speak`,
+                            'tts-speak',
+                            `${this.name}: tts-speak`,
                             async () => {
+
+                                //console.warn(options?.eventId + ',' + options?.chunkId + ',' + options?.splitId + ':' + i + ': ' + tx)
+
                                 await this.config.playSoundFunc(audio_filepath)
                                 if (this.config.autoCleanupOutput) {
                                     if (existsSync(gradio_gen_folder))
@@ -107,11 +133,19 @@ export default class BridgeTTSBase {
                 }
             }
             if (this.shetUpNow)
-                await this.speakStack.clearTasks()
+                this.#clearTasks()
             this.shetUpNow = false
         } catch (err) {
             throw SpeakerError.fromErr('speak fail', err)
         }
+    }
+
+    async #clearTasks() {
+        await this.speakStack.clearTasks()
+        await this.waitStack.clearTasks()
+    }
+
+    async waitIdle(timeout) {
     }
 
     findReferenceAudioFile(referenceAudio) {

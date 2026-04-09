@@ -126,10 +126,13 @@ export default class TTSWebUI extends TTSPluginBase {
 	/* ---- TTS plugin interface impl ---- */
 	/* ---- rely on the API bridge ---- */
 
-	async speak(text, voice = null) {
+	async speak(text, voice = null, options = null) {
 		this.#assertSpeakPluginImplAvailable()
 		//console.log(`[TTS:${this.apiId}]`)
-		return await this.apiBridge.speak(text, voice)
+		if (options?.noAwait)
+			return this.apiBridge.speak(text, voice, options)
+		else
+			return await this.apiBridge.speak(text, voice, options)
 	}
 
 	async waitIdle(timeout) {

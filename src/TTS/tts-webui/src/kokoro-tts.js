@@ -15,10 +15,6 @@ export default class KokoroTTSBridge extends BridgeTTSBase {
 
     /* ---- TTS plugin interface impl ---- */
 
-    async speak(text, voice = null) {
-        await super.speak(text, voice)
-    }
-
     getSpeakParameters(tx, agentPars, pars, voice) {
         return {
             text: tx,
@@ -39,9 +35,6 @@ export default class KokoroTTSBridge extends BridgeTTSBase {
                 agentPars.seed
                 || pars.seed.default,
         };
-    }
-
-    async waitIdle(timeout) {
     }
 
     /* <---- ---- */

@@ -15,10 +15,6 @@ export default class XTTSSimpleBridge extends BridgeTTSBase {
 
     /* ---- TTS plugin interface impl ---- */
 
-    async speak(text, voice = null) {
-        await super.speak(text, voice)
-    }
-
     getSpeakParameters(tx, agentPars, pars, voice) {
         super.loadReferenceAudioData(
             this.getPreferredVoices(
@@ -40,12 +36,6 @@ export default class XTTSSimpleBridge extends BridgeTTSBase {
                 agentPars.speaker
                 || pars.speaker.default
         };
-    }
-
-    async waitIdle(timeout) {
-    }
-
-    async shetUp() {
     }
 
     /* <---- ---- */

@@ -15,10 +15,6 @@ export default class OpenVoiceV1Bridge extends BridgeTTSBase {
 
     /* ---- TTS plugin interface impl ---- */
 
-    async speak(text, voice = null) {
-        await super.speak(text, voice)
-    }
-
     getSpeakParameters(tx, agentPars, pars, voice) {
         super.loadReferenceAudioData(
             this.getPreferredVoices(
@@ -36,12 +32,6 @@ export default class OpenVoiceV1Bridge extends BridgeTTSBase {
                 agentPars.seed
                 || pars.seed.default
         };
-    }
-
-    async waitIdle(timeout) {
-    }
-
-    async shetUp() {
     }
 
     /* <---- ---- */

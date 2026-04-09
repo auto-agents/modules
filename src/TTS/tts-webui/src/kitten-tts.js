@@ -15,10 +15,6 @@ export default class KittenTTSBridge extends BridgeTTSBase {
 
     /* ---- TTS plugin interface impl ---- */
 
-    async speak(text, voice = null) {
-        await super.speak(text, voice)
-    }
-
     getSpeakParameters(tx, agentPars, pars, voice) {
         return {
             text: tx,
@@ -30,12 +26,6 @@ export default class KittenTTSBridge extends BridgeTTSBase {
                 agentPars.model_name
                 || pars.model_name.default
         };
-    }
-
-    async waitIdle(timeout) {
-    }
-
-    async shetUp() {
     }
 
     /* <---- ---- */
