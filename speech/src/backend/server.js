@@ -128,27 +128,33 @@ export default class SpeechServer {
 		if (this.wss) {
 			tasks.push(new Promise((resolve) => {
 				try {
+					//console.log('closing wss...')
 					this.wss.close(() => resolve())
+					//console.log('closed wss')
+					this.wss = null
 				} catch {
 					resolve()
 				}
 			}))
-			this.wss = null
 		}
 
 		if (this.server) {
 			tasks.push(new Promise((resolve) => {
 				try {
+					//console.log('closing srv...')
 					this.server.close(() => resolve())
+					//console.log('closed srv')
+					this.server = null
 				} catch {
 					resolve()
 				}
 			}))
-			this.server = null
 		}
 
 		this.runningStatus = 'idle'
-		return Promise.all(tasks).then(() => undefined)
+		return Promise.all(tasks).then(() => {
+			console.log('browser-tts SPA server stopped')
+		})
 	}
 
 	_handleWsMessage(msg) {
