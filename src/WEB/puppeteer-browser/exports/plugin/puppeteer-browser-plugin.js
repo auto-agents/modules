@@ -4,6 +4,7 @@ import { toJson } from './../../../../../../shared/src/utils/utils';
 export const PUPPETEER_PID = 'PUPPETEER_PID'
 export const PUPPETEER_WSE = 'PUPPETEER_WSE'
 export const PUPPETEER_ARGS = 'PUPPETEER_ARGS'
+export const PUPPETEER_CMD = 'PUPPETEER_CMD'
 
 export default class PuppeteerBrowserPlugin {
 
@@ -27,7 +28,7 @@ export default class PuppeteerBrowserPlugin {
 	}
 
 	#o() {
-		return this.ctx.components.output
+		return this.outputContext.output
 	}
 
 	#s() {
@@ -38,26 +39,42 @@ export default class PuppeteerBrowserPlugin {
 		const browserPath = this.ctx.shell.browserChrome.path[
 			this.ctx.shell.platform
 		]
-		this.browser = await puppeteer.launch({
-			executablePath: browserPath,
-			browser: 'chrome',
-			headless: this.config.headless,
-			devtools: this.config.devtools,
-			dumpio: false
-			//waitForInitialPage: true
-		})
+		if (this.config.detached) {
+			// attempt to find a running instance
+			this.browser = await puppeteer.connect({
+				browserWSEndpoint: this.config.detachedInstance.wse
+			})
+		}
+		else
+			this.browser = await puppeteer.launch({
+				executablePath: browserPath,
+				browser: 'chrome',
+				headless: this.config.headless,
+				devtools: this.config.devtools,
+				dumpio: false
+			})
 		const o = this.#o()
 		const s = this.#s()
+		const m = this.outputContext.getMargin()
 
 		const wse = this.browser.wsEndpoint()
-		o.appendLine('browser ws endpoint: ' + wse)
+		o.appendLine(m + 'browser ws endpoint: ' + wse)
 		const proc = this.browser.process()
-		const pid = proc.pid
-		o.appendLine('browser pid: ' + pid)
+		var pid = null
+		if (proc) {
+			pid = proc.pid
+			o.appendLine(m + 'browser pid: ' + pid)
+		}
 
 		s.vars.set(PUPPETEER_PID, pid)
 		s.vars.set(PUPPETEER_WSE, wse)
-		s.vars.set(PUPPETEER_ARGS, toJson(proc.spawnargs))
+		s.vars.set(PUPPETEER_ARGS,
+			proc ? toJson(proc.spawnargs)
+				: toJson(this.config.detachedInstance.cmd))
+		s.vars.set(PUPPETEER_CMD,
+			proc ? proc.spawnargs.join(' ')
+				: this.config.detachedInstance.line
+		)
 	}
 
 	/**
