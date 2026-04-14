@@ -104,6 +104,15 @@ export default class PuppeteerBrowserPlugin {
 	}
 
 	/**
+	 * perform a query using a scrapper
+	 * @param {String} query user query
+	 * @param {String} browser browser id
+	 */
+	async search(query, browser) {
+
+	}
+
+	/**
 	 * unload plugin
 	 * @param {Object} outputContext
 	 */

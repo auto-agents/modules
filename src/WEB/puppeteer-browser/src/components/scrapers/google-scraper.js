@@ -1,6 +1,10 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import puppeteer from 'puppeteer'
 
 const querystring = require('node:querystring');
+
+__dirname
 
 export default class GoogleScraper {
 
@@ -15,7 +19,21 @@ export default class GoogleScraper {
         this.plugin = plugin
     }
 
+    #configScript(script, query) {
+        return script
+            .replaceAll('{query}', query)
+            .replaceAll('{minimumPauseDelay}', this.config.minimumPauseDelay)
+    }
+
     async run(query) {
+        const scriptsPath = join(
+            process.cwd(),
+            this.config.scriptsPath
+        )
+        const runQueryScript = this.#configScript(readFileSync(
+            join(scriptsPath, this.config.scripts.runQuery)
+        ).toString(), query)
+
         const url = this.config.queryUrl.replace(
             '{search_query}',
             querystring.escape(query))
@@ -24,6 +42,7 @@ export default class GoogleScraper {
         const page = await this.plugin.openPage(url)
 
         // 2. launch the search query
-        await page.evaluate('console.log("ici")')
+
+        await page.evaluate(runQueryScript)
     }
 } 

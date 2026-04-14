@@ -25,7 +25,12 @@ export default function config(ctx) {
 					scrappers: {
 						google: {
 							file: 'google-scraper.js',
-							queryUrl: 'https://www.google.com/search?q={search_query}'
+							queryUrl: 'https://www.google.com/search?q={search_query}',
+							scriptsPath: 'scripts',
+							scripts: {
+								runQuery: 'query-home-page.js'
+							},
+							minimumPauseDelay: 250
 						}
 					},
 					// when user lanuch a dev browser instance by his own
@@ -54,7 +59,7 @@ export default function config(ctx) {
 		cli: {
 			commands: [
 				{
-					names: ['puppeteer', 'pup', 'p'],
+					names: ['puppeteer', 'pup'],
 					description: 'puppeteer plugin control command',
 					config: {
 						options: {
@@ -71,7 +76,7 @@ export default function config(ctx) {
 										description: 'close the page specified with --id'
 									},
 									{
-										query: 'search',
+										value: 'search',
 										description: 'run a query on a site using the specified scrapper with id'
 									}
 								],
@@ -94,7 +99,7 @@ export default function config(ctx) {
 								required: false,
 								short: 't',
 								description: "eventually text parameter"
-							},
+							}
 						},
 						allowPositionals: true
 					},

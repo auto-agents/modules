@@ -29,16 +29,17 @@ export default class PupeteerCommand extends Command {
 
 		switch (action) {
 
-			case 'query':
+			case 'search':
 				if (!id) {
 					this.parameterMissing(argId)
 					return
 				}
 				if (!text) {
-					this.parameterMissing(argId)
+					this.parameterMissing(argText)
 					return
 				}
-
+				o.appendLine('launch browser search with: ' + id)
+				const r = await plugin.search(text, id)
 				break
 
 			case 'open':

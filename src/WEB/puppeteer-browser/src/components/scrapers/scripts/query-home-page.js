@@ -11,8 +11,8 @@ let wait = async ms => await new Promise(resolve => {
 
 // 0. TEST CASE
 
-let query = 'python scripts'
-let delay = 250
+let query = '{query}'
+let delay = '{minimumPauseDelay}'
 
 // 1. check if cookie consentement page
 
