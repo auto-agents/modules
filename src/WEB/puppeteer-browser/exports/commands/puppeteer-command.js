@@ -23,7 +23,23 @@ export default class PupeteerCommand extends Command {
 		const id = this.getValue(com, args, argId)
 			|| this.getPositionalArg(com, args, argId, 1)
 
+		const argText = 'text'
+		const text = this.getValue(com, args, argText)
+			|| this.getPositionalArg(com, args, argText, 2)
+
 		switch (action) {
+
+			case 'query':
+				if (!id) {
+					this.parameterMissing(argId)
+					return
+				}
+				if (!text) {
+					this.parameterMissing(argId)
+					return
+				}
+
+				break
 
 			case 'open':
 				if (!url) {
@@ -34,6 +50,7 @@ export default class PupeteerCommand extends Command {
 				o.appendLine('open browser at: ' + url)
 				const pageInfo = await plugin.openPage(url)
 				o.appendLine('done ✔️ page id = ' + pageInfo.id)
+				await pageInfo.page.evaluate('console.log("ici")')
 				break
 
 			case 'close':

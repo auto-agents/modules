@@ -24,6 +24,7 @@ export default function config(ctx) {
 					},
 					scrappers: {
 						google: {
+							file: 'google-scraper.js',
 							queryUrl: 'https://www.google.com/search?q={search_query}'
 						}
 					},
@@ -68,6 +69,10 @@ export default function config(ctx) {
 									{
 										value: 'close',
 										description: 'close the page specified with --id'
+									},
+									{
+										query: 'search',
+										description: 'run a query on a site using the specified scrapper with id'
 									}
 								],
 								description: 'an action to control the puppetter plugin browser'
@@ -83,7 +88,13 @@ export default function config(ctx) {
 								required: false,
 								short: 'i',
 								description: "eventually a page id"
-							}
+							},
+							text: {
+								type: 'string',
+								required: false,
+								short: 't',
+								description: "eventually text parameter"
+							},
 						},
 						allowPositionals: true
 					},

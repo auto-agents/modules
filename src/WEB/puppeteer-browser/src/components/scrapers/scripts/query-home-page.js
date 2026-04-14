@@ -53,7 +53,7 @@ submitButton.click()
 
 // OR
 
-// the sorry page
+// the sorry page (human check)
 
 /*
 host:"www.google.com"
