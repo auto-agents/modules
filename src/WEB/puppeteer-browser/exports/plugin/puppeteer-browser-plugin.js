@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer'
 import { toJson } from './../../../../../../shared/src/utils/utils';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
-import { LogErrorEvent, LogWarningEvent } from '../../../../../../shared/src/data/events';
+import { errorEvent, LogErrorEvent, LogWarningEvent } from '../../../../../../shared/src/data/events';
 
 export const PUPPETEER_PID = 'PUPPETEER_PID'
 export const PUPPETEER_WSE = 'PUPPETEER_WSE'
@@ -158,7 +158,9 @@ export default class PuppeteerBrowserPlugin {
 
 	#err(err) {
 		const e = this.ctx.components.event
-		e.emit(LogErrorEvent, err)
+		e.emit(LogErrorEvent,
+			errorEvent(this.pluginName,
+				err))
 	}
 
 	/**

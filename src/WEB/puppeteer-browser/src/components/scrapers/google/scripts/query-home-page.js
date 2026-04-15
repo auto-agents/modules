@@ -14,6 +14,7 @@
     // 0. TEST CASE
 
     let query = '{query}'
+    let kdbDelay = '{minimumKbdDelay}'
     let delay = '{minimumPauseDelay}'
 
     // 1. check if sorry captcha page
@@ -43,7 +44,7 @@
 
     for (let i = 0; i < query.length; i++) {
         queryInput.value += query[i]
-        await wait(delay)
+        await wait(kdbDelay)
     }
 
     // 3. click the 'Search' button

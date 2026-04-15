@@ -38,9 +38,15 @@ export default function config(ctx) {
 							pathNames: {
 								captcha: '/sorry/index'
 							},
+							minimumKbdDelay: 100,
 							minimumPauseDelay: 250,
 							includeYouTubeResults: false,
-							excludeEmptyTopics: true
+							excludeEmptyTopics: true,
+							excludedResultUrls: [
+								'https://maps.google.com/maps?',
+								'https://www.google.com/travel/',
+							],
+							skipResults: 1
 						}
 					},
 					// when user lanuch a dev browser instance by his own

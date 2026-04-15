@@ -24,8 +24,12 @@ export default class GoogleScraper {
             .replaceAll('{query}', query)
             .replaceAll('{catchaPathName}', this.config.pathNames.captcha)
             .replaceAll('{minimumPauseDelay}', this.config.minimumPauseDelay)
+            .replaceAll('{minimumKbdDelay}', this.config.minimumKbdDelay)
             .replaceAll('{includeYouTubeResults}', this.config.includeYouTubeResults)
             .replaceAll('{excludeEmptyTopics}', this.config.excludeEmptyTopics)
+            .replaceAll('{excludeEmptyTopics}', this.config.excludeEmptyTopics)
+            .replaceAll('{excludedResultUrls}', JSON.stringify(this.config.excludedResultUrls))
+            .replaceAll('{skipResults}', this.config.skipResults)
     }
 
     #getScript(name, query) {
@@ -76,7 +80,7 @@ export default class GoogleScraper {
             const scrapResultsScript = this.#getScript(this.config.scripts.scrapResults, null)
             r = await page.evaluate(scrapResultsScript)
 
-            if (r instanceof String) {
+            if (typeof r === 'string') {
                 const m = 'blocked by: ' + r
                 throw new ScraperError(m, r)
             }

@@ -11,6 +11,17 @@
 
     var includeYouTubeResults = '{includeYouTubeResults}' == 'true'
     var excludeEmptyTopics = '{excludeEmptyTopics}' == 'true'
+    var skipResults = '{skipResults}'
+    var excludedResultUrls = JSON.parse('{excludedResultUrls}')
+    console.log(excludedResultUrls)
+
+    let isExcludedResultUrl = (href) => {
+        var r = false
+        excludedResultUrls.forEach(x => {
+            r |= href.startsWith(x)
+        });
+        return r
+    }
 
     // the postfix 'ved' in 'data-ved' is surelly periodically changed
     let list = document.querySelectorAll('a[ping][data-ved]').values().toArray()
@@ -21,6 +32,9 @@
         results = results.filter(x => x.topic != null && x.topic.length > 0)
     if (!includeYouTubeResults)
         results = results.filter(x => !x.href.startsWith('https://www.youtube.com/'))
+    results = results.filter(x => !isExcludedResultUrl(x.href))
+    if (skipResults > 0)
+        results = results.splice(skipResults)
 
     let pagesList = document.querySelectorAll('a[aria-label] > span').values().toArray()
         .splice(1)
