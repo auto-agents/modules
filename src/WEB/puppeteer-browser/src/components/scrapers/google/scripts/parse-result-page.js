@@ -26,7 +26,16 @@
     let list = document.querySelectorAll('a[ping][data-ved]').values().toArray()
         .filter(x => x.id == '')
 
-    let results = list.map((x, i) => new Object({ index: i, topic: x.innerText, href: x.href }))
+    let results = list.map((x, i) => {
+
+        const p = x.parentNode?.parentNode?.parentNode?.parentNode?.parentNode
+        const o = new Object({ index: i, topic: x.innerText, href: x.href, summary: '' })
+        const childs = p.childNodes.values().toArray()
+        if (p && childs.length >= 2) {
+            o.summary = childs[1].textContent
+        }
+        return o;
+    })
     if (excludeEmptyTopics)
         results = results.filter(x => x.topic != null && x.topic.length > 0)
     if (!includeYouTubeResults)
@@ -34,6 +43,7 @@
     results = results.filter(x => !isExcludedResultUrl(x.href))
     if (skipResults > 0)
         results = results.splice(skipResults)
+
 
     let pagesList = document.querySelectorAll('a[aria-label] > span').values().toArray()
         .splice(1)
@@ -47,7 +57,7 @@
     if (lst.length > 0) {
         let n = lst[0]
         if (n?.parentNode?.parentNode)
-            aiContent = n.textContent
+            aiContent = n.parentNode.parentNode.textContent
     }
 
     // "head" response

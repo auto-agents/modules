@@ -27,6 +27,8 @@ export default class PupeteerCommand extends Command {
 		const text = this.getValue(com, args, argText)
 			|| this.getPositionalArg(com, args, argText, 2)
 
+		var cr = null
+
 		switch (action) {
 
 			case 'search':
@@ -40,7 +42,7 @@ export default class PupeteerCommand extends Command {
 				}
 				o.newLine()
 				o.appendLine('launch browser search with: ' + id)
-				const r = await plugin.search(text, id)
+				cr = await plugin.search(text, id)
 				break
 
 			case 'open':
@@ -54,6 +56,7 @@ export default class PupeteerCommand extends Command {
 				const pageInfo = await plugin.openPage(url)
 				o.appendLine('done ✔️ page id = ' + pageInfo.id)
 				await pageInfo.page.evaluate('console.log("ici")')
+				cr = pageInfo
 				break
 
 			case 'close':
@@ -70,5 +73,7 @@ export default class PupeteerCommand extends Command {
 			default:
 				this.emitCommandError(`Unknown action: ${action} `)
 		}
+
+		return cr
 	}
 }
