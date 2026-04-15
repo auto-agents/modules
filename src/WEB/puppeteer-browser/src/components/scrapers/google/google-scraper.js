@@ -88,8 +88,10 @@ export default class GoogleScraper {
                 throw new ScraperError(m, r)
             }
 
+            r.query = query
             getSessionVars(this.ctx).set('search', r)
             o.appendLine('success ✔️')
+
             return r
 
         } catch (err) {
