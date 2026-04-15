@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer'
 import { toJson } from './../../../../../../shared/src/utils/utils';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
-import { LogWarningEvent } from '../../../../../../shared/src/data/events';
+import { LogErrorEvent, LogWarningEvent } from '../../../../../../shared/src/data/events';
 
 export const PUPPETEER_PID = 'PUPPETEER_PID'
 export const PUPPETEER_WSE = 'PUPPETEER_WSE'
@@ -146,7 +146,7 @@ export default class PuppeteerBrowserPlugin {
 			result = await scraper.run(query)
 		}
 		catch (err) {
-			this.#warn(err.message)
+			this.#err(err.message)
 		}
 
 		return {
@@ -156,9 +156,9 @@ export default class PuppeteerBrowserPlugin {
 		}
 	}
 
-	#warn(text) {
-		const e = this.components.event
-		e.emit(LogWarningEvent, text)
+	#err(text) {
+		const e = this.ctx.components.event
+		e.emit(LogErrorEvent, text)
 	}
 
 	/**

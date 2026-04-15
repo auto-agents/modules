@@ -29,11 +29,29 @@
 
     // ai content
 
-    let n = document.querySelectorAll('mark')[0]
-    n = n.parentNode.parentNode
-    let aiContent = n.textContent
+    let aiContent = ''
+    let lst = document.querySelectorAll('mark').values().toArray()
+    if (lst.length > 0) {
+        let n = lst[0]
+        if (n?.parentNode?.parentNode)
+            aiContent = n.textContent
+    }
 
-    let result = { results: results, pages: pages, aiContent: aiContent }
+    // "head" response
+
+    let headResponse1 = ''
+    lst = document.querySelectorAll('span[lang]').values().toArray()
+    if (lst.length > 0) {
+        headResponse1 = lst[0].textContent
+    }
+
+    let headResponse2 = ''
+    lst = document.querySelectorAll('div[lang]').values().toArray()
+    if (lst.length > 0) {
+        headResponse2 = lst[0].textContent
+    }
+
+    let result = { results: results, pages: pages, aiContent: aiContent, headResponse1: headResponse1, headResponse2: headResponse2 }
 
     console.log(result)
     return result
