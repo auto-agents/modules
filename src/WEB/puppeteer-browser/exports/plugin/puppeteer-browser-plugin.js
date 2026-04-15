@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer'
 import { toJson } from './../../../../../../shared/src/utils/utils';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import { LogWarningEvent } from '../../../../../../shared/src/data/events';
 
 export const PUPPETEER_PID = 'PUPPETEER_PID'
 export const PUPPETEER_WSE = 'PUPPETEER_WSE'
@@ -87,8 +88,6 @@ export default class PuppeteerBrowserPlugin {
 	 * @returns {Object} { page: page, id: page_id }
 	 */
 	async openPage(url) {
-		const id = this.pageId
-		this.pageId++
 		const page = await this.browser.newPage()
 		await page.setViewport({
 			width: this.config.viewport.width,
@@ -98,7 +97,10 @@ export default class PuppeteerBrowserPlugin {
 			await page.goto(url)
 		if (this.config.focusOnOpenPage)
 			await page.bringToFront()
+		const id = this.pageId
+		this.pageId++
 		this.pages[id] = page
+		page.id = id
 		return { page: page, id: id }
 	}
 
@@ -113,10 +115,15 @@ export default class PuppeteerBrowserPlugin {
 	 * perform a query using a scrapper
 	 * @param {String} query user query
 	 * @param {String} browser browser id
+	 * @param {Object} options specific actions options 
+	 * @param {number} scraperId id of an existing scraper
 	 */
-	async search(query, browser) {
+	async search(query, browser, options, scraperId) {
+
+		const o = this.outputContext.output
 		const bconf = this.config.scrappers[browser]
 		if (!bconf) throw new Error('browser config not found: ' + browser)
+
 		const path = join(dirname(this.specification.file),
 			this.config.paths.scrapers,
 			browser,
@@ -130,8 +137,28 @@ export default class PuppeteerBrowserPlugin {
 			this.outputContext
 		)
 		this.#o().appendLine('added scraper: ' + this.scraperId)
-		this.scrapers[this.scraperId++] = scraper
-		await scraper.run(query)
+		const id = this.scraperId++
+		this.scrapers[id] = scraper
+		scraper.id = id
+
+		var result = null
+		try {
+			result = await scraper.run(query)
+		}
+		catch (err) {
+			this.#warn(err.message)
+		}
+
+		return {
+			id: id,
+			scraper: scraper,
+			result: result
+		}
+	}
+
+	#warn(text) {
+		const e = this.components.event
+		e.emit(LogWarningEvent, text)
 	}
 
 	/**

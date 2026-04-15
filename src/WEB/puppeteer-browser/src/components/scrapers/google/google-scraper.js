@@ -58,11 +58,11 @@ export default class GoogleScraper {
 
         o.appendLine('2. run query')
         const runQueryScript = this.#getScript(this.config.scripts.runQuery, query)
-        const r = await page.evaluate(runQueryScript)
+        var r = await page.evaluate(runQueryScript)
 
         if (r != RESULT_PAGE) {
-            o.appendLine('blocked by: ' + r)
-            return
+            const m = 'blocked by: ' + r
+            throw new ScraperError(m, r)
         }
         else
             o.appendLine(r)
@@ -72,8 +72,14 @@ export default class GoogleScraper {
         await page.waitForNetworkIdle()
 
         const scrapResultsScript = this.#getScript(this.config.scripts.scrapResults, null)
-        const rs = await page.evaluate(scrapResultsScript)
+        r = await page.evaluate(scrapResultsScript)
 
-        o.appendLine('result: ' + toJson(rs))
+        if (r instanceof String) {
+            const m = 'blocked by: ' + r
+            throw new ScraperError(m, r)
+        }
+
+        o.appendLine('result: ' + toJson(r))
+        return r
     }
 } 

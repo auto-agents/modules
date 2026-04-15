@@ -66,8 +66,6 @@
     origin:"https://www.google.com"
     pathname:"/sorry/index"
     */
-    if (window.location.pathname == '{catchaPathName}')
-        return 'CAPTCHA_BEFORE_RESULT_PAGE'
 
     return 'RESULT_PAGE'
 
