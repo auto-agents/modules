@@ -146,7 +146,7 @@ export default class PuppeteerBrowserPlugin {
 			result = await scraper.run(query)
 		}
 		catch (err) {
-			this.#err(err.message)
+			this.#err(err)
 		}
 
 		return {
@@ -156,9 +156,9 @@ export default class PuppeteerBrowserPlugin {
 		}
 	}
 
-	#err(text) {
+	#err(err) {
 		const e = this.ctx.components.event
-		e.emit(LogErrorEvent, text)
+		e.emit(LogErrorEvent, err)
 	}
 
 	/**
