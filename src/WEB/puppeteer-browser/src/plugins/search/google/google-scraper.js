@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { getSessionVars } from '../../../../../../../../shared/src/utils/utils';
 import ScraperError from '../../../components/ScraperError';
+import { PUPPETEER_ACTION_GET, PUPPETEER_ACTION_SEARCH } from '../../../../exports/plugin/puppeteer-browser-plugin';
 //import puppeteer from 'puppeteer-core'
 
 const querystring = require('node:querystring');
@@ -52,8 +53,25 @@ export default class GoogleScraper {
         return runQueryScript
     }
 
-    async run(query, usePage) {
+    async run(query, usePage, options) {
 
+        switch (options.action) {
+            case PUPPETEER_ACTION_SEARCH:
+                return await this.#search(query, usePage, options)
+
+            case PUPPETEER_ACTION_GET:
+                return await this.#get(usePage, options)
+
+            default:
+                throw new Error('invalid action: ' + options.action)
+        }
+    }
+
+    async #get(usePage, options) {
+
+    }
+
+    async #search(query, usePage, options) {
         try {
             const o = this.outputContext.output
             const url = this.config.queryUrl.replace(

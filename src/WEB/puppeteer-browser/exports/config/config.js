@@ -28,13 +28,14 @@ export default function config(ctx) {
 						searchPlugins: 'search'			// related to plugins
 					},
 					dumpSearchResults: true,
-					searchOptions: {
-						browseSearchPages: [],		// pages results to include in deep search
-						limitResults: 1,			// result per page to handle for deep search
-						browsePages: true			// if true, browse and scrap a linked page
-					},
+
 					plugins: {
 						search: {
+							searchOptions: {
+								action: null,				// requested action: SEARCH | GET
+								browseSearchPages: [0],		// pages results to include in deep search
+								limitResults: 1,			// result per page to handle for deep search
+							},
 							google: {
 								file: 'google-scraper.js',
 								queryUrl: 'https://www.google.com',	// /search?q={search_query}
@@ -130,10 +131,10 @@ export default function config(ctx) {
 								short: 't',
 								description: "eventually text parameter"
 							},
-							use: {
+							plugin: {
 								type: 'string',
 								required: false,
-								short: 'u',
+								short: 'p',
 								description: 'eventually id of an existing plugin to reuse'
 							},
 							get: {

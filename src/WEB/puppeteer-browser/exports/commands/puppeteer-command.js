@@ -1,5 +1,6 @@
 import Command from '../../../../../../shared/src/commands/command.js';
 import chalk from 'chalk'
+import { PUPPETEER_ACTION_GET, PUPPETEER_ACTION_SEARCH, PUPPETEER_GET_ALL, PUPPETEER_GET_DEFAULT } from '../plugin/puppeteer-browser-plugin.js';
 
 export default class PupeteerCommand extends Command {
 
@@ -28,27 +29,49 @@ export default class PupeteerCommand extends Command {
 		const text = this.getValue(com, args, argText)
 			|| this.getPositionalArg(com, args, argText, 2)
 
-		const argUse = 'use'
+		const argUse = 'plugin'
 		const use = this.getValue(com, args, argUse)
-			|| this.getPositionalArg(com, args, argUse, 3)
+
+		const argGet = 'get'
+		const get = this.getValue(com, args, argGet)
 
 		var cr = null
 
 		switch (action) {
 
 			case 'search':
+				var opts = {
+					action: PUPPETEER_ACTION_SEARCH
+				}
 				if (!id) {
 					this.parameterMissing(argId)
 					return
 				}
-				if (!text) {
+				if (get) {
+					opts.action = PUPPETEER_ACTION_GET
+					switch (get) {
+						case PUPPETEER_GET_ALL:
+							opts.browseSearchPages = [
+								0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+							]
+							break
+						case PUPPETEER_GET_DEFAULT:
+							break
+						default:
+							// pages list
+							opts.browseSearchPages = get.split(',').map(x => eval(x))
+							break
+					}
+				}
+				if (opts.action == PUPPETEER_ACTION_SEARCH && !text) {
 					this.parameterMissing(argText)
 					return
 				}
+
 				o.newLine()
-				o.appendLine('launch browser search with: ' + id +
+				o.appendLine('launch browser for action: ' + opts.action + ' with: ' + id +
 					(use ? (', plugin #' + use) : ''))
-				cr = await plugin.search(text, id, use)
+				cr = await plugin.search(text, id, use, opts)
 				const sr = cr?.result
 
 				if (plugin.config.dumpSearchResults) {

@@ -10,6 +10,12 @@ export const PUPPETEER_WSE = 'PUPPETEER_WSE'
 export const PUPPETEER_ARGS = 'PUPPETEER_ARGS'
 export const PUPPETEER_CMD = 'PUPPETEER_CMD'
 
+export const PUPPETEER_GET_ALL = 'all'
+export const PUPPETEER_GET_DEFAULT = 'default'
+
+export const PUPPETEER_ACTION_SEARCH = 'search'
+export const PUPPETEER_ACTION_GET = 'get'
+
 export default class PuppeteerBrowserPlugin {
 
 	browser = null
@@ -169,11 +175,11 @@ export default class PuppeteerBrowserPlugin {
 	 */
 	async search(query, pluginName, pluginId, options) {
 
-		var opts = this.config.searchOptions
+		var opts = this.config.plugins.search.searchOptions
 		if (options)
 			opts = {
 				...opts,
-				options
+				...options
 			}
 
 		const o = this.outputContext.output
@@ -187,7 +193,7 @@ export default class PuppeteerBrowserPlugin {
 
 		var result = null
 		try {
-			result = await plugin.run(query, plugin.page)
+			result = await plugin.run(query, plugin.page, opts)
 		}
 		catch (err) {
 			this.#err(err)
