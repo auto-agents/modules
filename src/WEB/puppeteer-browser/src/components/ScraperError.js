@@ -2,7 +2,7 @@ export default class ScraperError extends Error {
 
     data = null
 
-    constructor(message,data) {
+    constructor(message, data) {
         super(message)
         this.data = data
         this.name = 'ScraperError'
