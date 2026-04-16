@@ -3,6 +3,7 @@ import { toJson } from './../../../../../../shared/src/utils/utils';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
 import { AppExitingEvent, errorEvent, LogErrorEvent, LogWarningEvent } from '../../../../../../shared/src/data/events';
+import Status from '../../../../../../shared/src/utils/status';
 
 export const PUPPETEER_PID = 'PUPPETEER_PID'
 export const PUPPETEER_WSE = 'PUPPETEER_WSE'
@@ -23,14 +24,20 @@ export default class PuppeteerBrowserPlugin {
 		this.ctx = ctx
 		this.outputContext = outputContext
 		this.overloadConfig = overloadConfig
-
+		this.status = new Status(ctx)
 		this.ctx.cli.onExiting.push(async () => await this.#exit())
 	}
 
 	async #exit() {
 		for (const [id, page] of Object.entries(this.pages)) {
 			this.#o().appendLine('closing page: ' + id)
-			await this.closePage(id)
+			try {
+				await this.closePage(id)
+			} catch (err) {
+				this.#o().apppendLine(
+					this.status.error(err?.stack || err?.toString() || err)
+				)
+			}
 			this.#o().appendLine('done ✔️')
 		}
 	}
@@ -161,6 +168,13 @@ export default class PuppeteerBrowserPlugin {
 	 * @param {Object} options specific actions options 
 	 */
 	async search(query, pluginName, pluginId, options) {
+
+		var opts = this.config.searchOptions
+		if (options)
+			opts = {
+				...opts,
+				options
+			}
 
 		const o = this.outputContext.output
 		const config = this.config.plugins.search[pluginName]

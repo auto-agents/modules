@@ -1,4 +1,5 @@
-import Command from '../../../../../../shared/src/commands/command.js'
+import Command from '../../../../../../shared/src/commands/command.js';
+import chalk from 'chalk'
 
 export default class PupeteerCommand extends Command {
 
@@ -49,17 +50,22 @@ export default class PupeteerCommand extends Command {
 					(use ? (', plugin #' + use) : ''))
 				cr = await plugin.search(text, id, use)
 				const sr = cr?.result
+
 				if (plugin.config.dumpSearchResults) {
 					if (sr?.results && sr.results.length > 0) {
 						var n = 1
 						if (sr?.aiContent && sr.aiContent.length > 0) {
 							o.newLine()
-							o.appendLine(sr.aiContent.trim())
+							o.appendLine(chalk.hex(plugin.config.theme.resultItemSummary)(sr.aiContent.trim()))
 						}
 						o.newLine()
 						sr.results.forEach(item => {
 							if (item.topic && item.topic.length > 0)
-								o.appendLine((n++) + '. ' + item.topic.trim() + '\n')
+								o.appendLine(
+									chalk.hex(plugin.config.theme.resultItemNumber)((n++) + '. ')
+									+ chalk.hex(plugin.config.theme.resultItemTopic)(item.topic.trim()) + '\n')
+							if (item.summary && item.summary.length > 0)
+								o.appendLine(chalk.hex(plugin.config.theme.resultItemSummary)(item.summary.trim()) + '\n')
 						});
 					}
 				}
@@ -75,7 +81,7 @@ export default class PupeteerCommand extends Command {
 				o.appendLine('open browser at: ' + url)
 				const pageInfo = await plugin.openPage(url)
 				o.appendLine('done ✔️ page id = ' + pageInfo.id)
-				await pageInfo.page.evaluate('console.log("ici")')
+				await pageInfo.page.evaluate('console.log("' + plugin.pluginName + ': page id #' + pageInfo.id + '")')
 				cr = pageInfo
 				break
 

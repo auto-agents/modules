@@ -12,7 +12,10 @@ const RESULT_PAGE = 'RESULT_PAGE'
 
 export default class GoogleScraper {
 
+    // linked page
     page = null
+    // last search results
+    search = null
 
     constructor(ctx, plugin, config, outputContext) {
         this.ctx = ctx
@@ -78,7 +81,13 @@ export default class GoogleScraper {
 
             o.appendLine('2. run query')
             const runQueryScript = this.#getScript(this.config.scripts.runQuery, query)
-            var r = await page.evaluate(runQueryScript)
+            var r = null
+
+            const res = await Promise.all([
+                page.waitForNavigation(),
+                page.evaluate(runQueryScript)
+            ])
+            if (res.length > 1) r = res[1]
 
             if (r != RESULT_PAGE) {
                 const m = 'blocked by: ' + r
@@ -89,7 +98,7 @@ export default class GoogleScraper {
 
             // 3 . scrap results
 
-            await page.waitForNetworkIdle()
+            //await page.waitForNetworkIdle()
 
             const scrapResultsScript = this.#getScript(this.config.scripts.scrapResults, null)
             r = await page.evaluate(scrapResultsScript)
@@ -102,6 +111,8 @@ export default class GoogleScraper {
             r.query = query
             getSessionVars(this.ctx).set('search', r)
             o.appendLine('success ✔️')
+
+            this.search = r
 
             return r
 

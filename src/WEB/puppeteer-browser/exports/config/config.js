@@ -28,6 +28,11 @@ export default function config(ctx) {
 						searchPlugins: 'search'			// related to plugins
 					},
 					dumpSearchResults: true,
+					searchOptions: {
+						browseSearchPages: [],		// pages results to include in deep search
+						limitResults: 1,			// result per page to handle for deep search
+						browsePages: true			// if true, browse and scrap a linked page
+					},
 					plugins: {
 						search: {
 							google: {
@@ -53,7 +58,12 @@ export default function config(ctx) {
 							}
 						}
 					},
-					// when user lanuch a dev browser instance by his own
+					theme: {
+						resultItemNumber: '#63edffff',
+						resultItemTopic: '#569fff',
+						resultItemSummary: '#CCCCCC',
+					},
+					// when user launch a dev browser instance by his own
 					// reuse from a previously auto-launched instance properties (see in puppeteer cache)
 					detachedInstance: {
 						cmd: [
@@ -125,6 +135,12 @@ export default function config(ctx) {
 								required: false,
 								short: 'u',
 								description: 'eventually id of an existing plugin to reuse'
+							},
+							get: {
+								type: 'string',
+								required: false,
+								short: 'g',
+								description: 'follow any previous search results and produces a deep search result (opens and anylse the results pages). possibles values: list of pages numbers: 0,...,10 OR "all" OR "default"'
 							}
 						},
 						allowPositionals: true
