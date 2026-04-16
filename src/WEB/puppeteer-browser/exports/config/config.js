@@ -27,6 +27,7 @@ export default function config(ctx) {
 						plugins: '../../src/plugins',	// related to plugin exports/plugin folder
 						searchPlugins: 'search'			// related to plugins
 					},
+					dumpSearchResults: true,
 					plugins: {
 						search: {
 							google: {
@@ -118,6 +119,12 @@ export default function config(ctx) {
 								required: false,
 								short: 't',
 								description: "eventually text parameter"
+							},
+							use: {
+								type: 'string',
+								required: false,
+								short: 'u',
+								description: 'eventually id of an existing plugin to reuse'
 							}
 						},
 						allowPositionals: true

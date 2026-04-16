@@ -121,7 +121,18 @@ export default class PuppeteerBrowserPlugin {
 		return
 	}
 
-	async #getPlugin(category, name, config) {
+	async #getPlugin(category, name, config, pluginId) {
+
+		var plugin = null
+		if (pluginId) {
+			if (this.plugins[pluginId]) {
+				plugin = this.plugins[pluginId]
+				return plugin
+			}
+			else
+				this.#warn('plugin not found: ' + pluginId + '. get a new one')
+		}
+
 		const path = join(dirname(this.specification.file),
 			this.config.paths.plugins,
 			category,
@@ -129,13 +140,13 @@ export default class PuppeteerBrowserPlugin {
 			config.file)
 		if (!existsSync(path)) throw new Error('plugin file not found: ' + path)
 		const pluginMod = await import(path)
-		const plugin = new pluginMod.default(
+		plugin = new pluginMod.default(
 			this.ctx,
 			this,
 			config,
 			this.outputContext
 		)
-		this.#o().appendLine('added plugin: ' + plugin + ' #' + this.pluginId)
+		this.#o().appendLine('added plugin: ' + name + ' #' + this.pluginId)
 		const id = this.pluginId++
 		this.plugins[id] = plugin
 		plugin.id = id
@@ -145,32 +156,32 @@ export default class PuppeteerBrowserPlugin {
 	/**
 	 * perform a query using a scrapper
 	 * @param {String} query user query
-	 * @param {String} browser browser id
-	 * @param {Object} options specific actions options 
+	 * @param {String} pluginName plugin name
 	 * @param {number} pluginId id of an existing scraper
+	 * @param {Object} options specific actions options 
 	 */
-	async search(query, plugin, options, pluginId) {
+	async search(query, pluginName, pluginId, options) {
 
 		const o = this.outputContext.output
-		const config = this.config.plugins.search[plugin]
-		if (!config) throw new Error('browser config not found: ' + browser)
-
-		const scraper = await this.#getPlugin(
+		const config = this.config.plugins.search[pluginName]
+		if (!config) throw new Error('plugin config not found: ' + pluginName)
+		const plugin = await this.#getPlugin(
 			this.config.paths.searchPlugins,
-			plugin,
-			config)
+			pluginName,
+			config,
+			pluginId)
 
 		var result = null
 		try {
-			result = await scraper.run(query)
+			result = await plugin.run(query, plugin.page)
 		}
 		catch (err) {
 			this.#err(err)
 		}
 
 		return {
-			id: scraper.id,
-			scraper: scraper,
+			id: plugin.id,
+			plugin: plugin,
 			result: result
 		}
 	}
@@ -180,6 +191,11 @@ export default class PuppeteerBrowserPlugin {
 		e.emit(LogErrorEvent,
 			errorEvent(this.pluginName,
 				err))
+	}
+
+	#warn(err) {
+		const e = this.ctx.components.event
+		e.emit(LogWarningEvent, err)
 	}
 
 	/**

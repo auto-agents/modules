@@ -27,6 +27,10 @@ export default class PupeteerCommand extends Command {
 		const text = this.getValue(com, args, argText)
 			|| this.getPositionalArg(com, args, argText, 2)
 
+		const argUse = 'use'
+		const use = this.getValue(com, args, argUse)
+			|| this.getPositionalArg(com, args, argUse, 3)
+
 		var cr = null
 
 		switch (action) {
@@ -41,8 +45,24 @@ export default class PupeteerCommand extends Command {
 					return
 				}
 				o.newLine()
-				o.appendLine('launch browser search with: ' + id)
-				cr = await plugin.search(text, id)
+				o.appendLine('launch browser search with: ' + id +
+					(use ? (', plugin #' + use) : ''))
+				cr = await plugin.search(text, id, use)
+				const sr = cr?.result
+				if (plugin.config.dumpSearchResults) {
+					if (sr?.results && sr.results.length > 0) {
+						var n = 1
+						if (sr?.aiContent && sr.aiContent.length > 0) {
+							o.newLine()
+							o.appendLine(sr.aiContent.trim())
+						}
+						o.newLine()
+						sr.results.forEach(item => {
+							if (item.topic && item.topic.length > 0)
+								o.appendLine((n++) + '. ' + item.topic.trim() + '\n')
+						});
+					}
+				}
 				break
 
 			case 'open':

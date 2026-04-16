@@ -74,7 +74,13 @@
         headResponse2 = lst[0].textContent
     }
 
-    let result = { results: results, pages: pages, aiContent: aiContent, headResponse1: headResponse1, headResponse2: headResponse2 }
+    let result = {
+        results: results,
+        pages: pages,
+        aiContent: aiContent,
+        headResponse1: headResponse1,
+        headResponse2: headResponse2
+    }
 
     console.log(result)
     return result

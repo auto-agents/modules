@@ -12,6 +12,8 @@ const RESULT_PAGE = 'RESULT_PAGE'
 
 export default class GoogleScraper {
 
+    page = null
+
     constructor(ctx, plugin, config, outputContext) {
         this.ctx = ctx
         this.plugin = plugin
@@ -47,7 +49,7 @@ export default class GoogleScraper {
         return runQueryScript
     }
 
-    async run(query) {
+    async run(query, usePage) {
 
         try {
             const o = this.outputContext.output
@@ -59,9 +61,18 @@ export default class GoogleScraper {
 
             o.newLine()
             o.appendLine('1. open page at url: ' + url)
-            const pageInfo = this.pageInfo = await this.plugin.openPage(url)
-            o.appendLine(`page ${pageInfo.id} opened`)
-            const page = pageInfo.page
+            var page = null
+            if (usePage) {
+                page = this.page
+                await page.bringToFront()
+                await page.goto(url)
+                o.appendLine(`page ${page.id} focused`)
+            }
+            else {
+                const pageInfo = this.pageInfo = await this.plugin.openPage(url)
+                o.appendLine(`page ${pageInfo.id} opened`)
+                page = this.page = pageInfo.page
+            }
 
             // 2. launch the search query
 
