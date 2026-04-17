@@ -94,13 +94,16 @@ export default class GoogleScraper extends PupeteerPlugin {
                     results.forEach(item => {
                         if (item.href &&
                             !options.limitResults
+                            || options.limitResults == 0
                             || itemCount < options.limitResults) {
                             const task = async (item) => {
 
                                 const n = item.index
                                 try {
                                     const pageInfo = await getTask.pluginGet.run(item.href)
-                                    pageInfos[n] = pageInfo
+                                    pageInfos[n] = { ...pageInfo }
+                                    // release page (tab)
+                                    pageInfo.owner = null
                                 } catch (err) {
                                     o.appendLine(this.status.error('scrap link #' + n + ' failed: ' + err.message))
                                 }
@@ -112,6 +115,7 @@ export default class GoogleScraper extends PupeteerPlugin {
                     })
                     await Promise.all(tasks)
 
+                    o.appendLine('get done ✔️')
                     this.scraps = pageInfos
                     this.search[pageIndex].content = { ...this.scraps }
                 }

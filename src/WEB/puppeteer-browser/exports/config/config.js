@@ -64,7 +64,10 @@ export default function config(ctx) {
 						get: {
 							getOptions: {
 								skipReload: true,
-								reusePage: true
+								reusePage: true,
+								// max tabs (resps. scraps) to perform simultaneously
+								maxTabs: 3,
+								differDelay: 500
 							},
 							['page-scraper']: {
 								file: 'page-scraper.js',
