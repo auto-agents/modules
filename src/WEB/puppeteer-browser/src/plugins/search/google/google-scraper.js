@@ -22,9 +22,9 @@ export default class GoogleScraper extends PupeteerPlugin {
     // last scrap results
     scraps = null
     // browse plugin
-    browseTasks = {}
+    getPlugins = {}
 
-    browseTask(id, pluginGetName, pluginGet) {
+    getPlugin(id, pluginGetName, pluginGet) {
         return { pluginGetName: pluginGetName, id: id, pluginGet: pluginGet }
     }
 
@@ -78,7 +78,7 @@ export default class GoogleScraper extends PupeteerPlugin {
     async #get(options) {
         // get or build a single browse task
         const o = this.outputContext.output
-        const getTask = await this.#getBrowseTask(options)
+        const getTask = await this.#getGetPlugin(options)
         const pagesTasks = []
 
         options.browseSearchPages.forEach(pageIndex => {
@@ -89,14 +89,15 @@ export default class GoogleScraper extends PupeteerPlugin {
                 const pageTask = async () => {
                     const results = searchPage.results
                     var itemIndex = 0
+                    var itemCount = 0
                     const tasks = []
                     results.forEach(item => {
                         if (item.href &&
                             !options.limitResults
-                            || itemIndex < options.limitResults) {
+                            || itemCount < options.limitResults) {
                             const task = async (item) => {
 
-                                const n = itemIndex
+                                const n = item.index
                                 try {
                                     const pageInfo = await getTask.pluginGet.run(item.href)
                                     pageInfos[n] = pageInfo
@@ -105,13 +106,14 @@ export default class GoogleScraper extends PupeteerPlugin {
                                 }
                             }
                             tasks.push(task(item))
+                            itemCount++
                         }
                         itemIndex++
                     })
                     await Promise.all(tasks)
 
                     this.scraps = pageInfos
-                    this.search[pageIndex].content = this.scraps
+                    this.search[pageIndex].content = { ...this.scraps }
                 }
                 pagesTasks.push(pageTask())
 
@@ -123,11 +125,11 @@ export default class GoogleScraper extends PupeteerPlugin {
         return this.search
     }
 
-    async #getBrowseTask(options) {
+    async #getGetPlugin(options) {
         if (!this.search) throw new Error('no search results available')
 
         const o = this.outputContext.output
-        const t = Object.values(this.browseTasks)
+        const t = Object.values(this.getPlugins)
             .filter(x => x.pluginGetName == options.pluginGetName)
         var task = null
         if (t.length > 0) {
@@ -135,16 +137,16 @@ export default class GoogleScraper extends PupeteerPlugin {
             o.appendLine('reuse get task "' + task.pluginGetName + '": #' + task.id)
         }
         else {
-            task = await this.#getNewBrowseTask(options)
-            this.browseTasks[task.id] = task
+            task = await this.#getNewGetPlugin(options)
+            this.getPlugins[task.id] = task
             o.appendLine('add new get task "' + task.pluginGetName + '": #' + task.id)
         }
         return task
     }
 
-    async #getNewBrowseTask(options) {
+    async #getNewGetPlugin(options) {
         var id = 0
-        const tasks = Object.values(this.browseTasks)
+        const tasks = Object.values(this.getPlugins)
         if (tasks.length > 0)
             id = Math.max(...tasks.map(x => x.id)) + 1
         const pluginGet = await this.plugin.getPlugin(
@@ -152,7 +154,7 @@ export default class GoogleScraper extends PupeteerPlugin {
             options.pluginGetName,
             this.plugin.config.plugins[this.plugin.config.paths.getPlugins][options.pluginGetName]
         )
-        const task = this.browseTask(id, options.pluginGetName, pluginGet)
+        const task = this.getPlugin(id, options.pluginGetName, pluginGet)
         return task
     }
 
@@ -201,8 +203,6 @@ export default class GoogleScraper extends PupeteerPlugin {
                 o.appendLine(r)
 
             // 3 . scrap results
-
-            //await page.waitForNetworkIdle()
 
             const scrapResultsScript = this.#getScript(this.config.scripts.scrapResults, null)
             r = await page.evaluate(scrapResultsScript)

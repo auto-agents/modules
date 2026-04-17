@@ -9,14 +9,14 @@ export default class PageScraper extends PupeteerPlugin {
         super(ctx, plugin, config, outputContext)
     }
 
-    // linked page
-    pagesInfos = {}
-    pagesInfosByUrl = {}
+    // linked page (shared throught scrapers)
+    static pagesInfos = {}
+    static pagesInfosByUrl = {}
 
     async run(url) {
         const o = this.outputContext.output
         const usePage = this.plugin.config.plugins.get.getOptions.reusePage
-            && this.pagesInfosByUrl[url] != null
+            && PageScraper.pagesInfosByUrl[url] != null
 
         o.appendLine('scrap page at: ' + url)
         try {
@@ -26,7 +26,7 @@ export default class PageScraper extends PupeteerPlugin {
             var pageInfo = null
             var page = null
             if (usePage) {
-                pageInfo = this.pagesInfosByUrl[url]
+                pageInfo = PageScraper.pagesInfosByUrl[url]
                 page = pageInfo.page
                 await page.bringToFront()
 
@@ -39,8 +39,9 @@ export default class PageScraper extends PupeteerPlugin {
             }
             else {
                 pageInfo = await this.plugin.openPage(url)
-                this.pagesInfos[pageInfo.id] = pageInfo
-                this.pagesInfosByUrl[url] = pageInfo
+                pageInfo.owner = this
+                PageScraper.pagesInfos[pageInfo.id] = pageInfo
+                PageScraper.pagesInfosByUrl[url] = pageInfo
                 o.appendLine(`page ${pageInfo.id} opened`)
                 page = this.page = pageInfo.page
             }
