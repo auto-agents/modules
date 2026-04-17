@@ -37,6 +37,9 @@
         sections: {},
         text: tc(document.querySelector('body')),
         links: [],
+        buttons: [],
+        inputs: [],
+        textAreas: [],
         images: [],
         metas: {}
     }
@@ -53,20 +56,53 @@
 
     r.links = document.querySelectorAll('a').values().toArray()
         .map(x => new Object({ text: tc(x), href: x.href }))
-        .filter(x => x.href != null && x.href !== undefined)
+        .filter(x => x.href != null && x.href !== undefined
+            && x.href.trim().length > 0
+        )
 
-    // 3. images
+    // 2. links - buttons
+
+    r.buttons = document.querySelectorAll('button').values().toArray()
+        .map(x => new Object({ id: x.id, name: x.name, type: x.type, text: tc(x) }))
+        .filter(x => x.text != null && x.text !== undefined
+            && x.text.trim().length > 0
+        )
+
+    // 3. input
+
+    r.inputs = document.querySelectorAll('input').values().toArray()
+        .map(x => new Object({
+            id: x.id, name: x.name, type: x.type,
+            value: x.value, placeholder: x.placeholder,
+            label: x.ariaLabel
+        }))
+
+    // 3. input - text areas
+
+    r.textAreas = document.querySelectorAll('textarea').values().toArray()
+        .map(x => new Object({
+            id: x.id, name: x.name, type: x.type,
+            value: x.value, placeholder: x.placeholder,
+            label: x.ariaLabel
+        }))
+
+    // 4. images
 
     r.images = document.querySelectorAll('img').values().toArray()
         .map(x => new Object({ alt: x.alt, src: x.src }))
+        .filter(x => x.src != null && x.src !== undefined
+            && x.src.trim().length > 0
+        )
 
-    // 4. header & footer
+    // 5. header & footer
+
     let n = (document.querySelector('header'))
     if (n) r.header = tc(n)
     n = (document.querySelector('footer'))
     if (n) r.footer = tc(n)
 
-    // 5. meta
+    // 6 meta
+
     let metList = document.querySelectorAll('meta').values().toArray()
     metList.map(m => {
         for (let i = 0; i < m.attributes.length; i++)

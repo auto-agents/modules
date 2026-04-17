@@ -91,6 +91,9 @@ export default class GoogleScraper extends PupeteerPlugin {
                     var itemIndex = 0
                     var itemCount = 0
                     const tasks = []
+                    const errors = []
+                    if (!this.search[pageIndex].errors)
+                        this.search[pageIndex].errors = []
                     results.forEach(item => {
                         if (item.href &&
                             !options.limitResults
@@ -106,6 +109,10 @@ export default class GoogleScraper extends PupeteerPlugin {
                                     pageInfo.owner = null
                                 } catch (err) {
                                     o.appendLine(this.status.error('scrap link #' + n + ' failed: ' + err.message))
+                                    errors.push({
+                                        link: n,
+                                        message: err.message
+                                    })
                                 }
                             }
                             tasks.push(task(item))
@@ -118,6 +125,7 @@ export default class GoogleScraper extends PupeteerPlugin {
                     o.appendLine('get done ✔️')
                     this.scraps = pageInfos
                     this.search[pageIndex].content = { ...this.scraps }
+                    this.search[pageIndex].errors = errors
                 }
                 pagesTasks.push(pageTask())
 
