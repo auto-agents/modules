@@ -34,9 +34,9 @@ export default function config(ctx) {
 						search: {
 							searchOptions: {
 								action: null,				// requested action: SEARCH | GET
-								browseSearchPages: [0],		// pages results to include in deep search
+								browseSearchPages: [1],		// pages results to include in deep search
 								limitResults: 1,			// result per page to handle for deep search
-								pluginGetName: 'page',
+								pluginGetName: 'page-scraper',
 								reuseGetPlugin: true		// if true reuse already instanciated get plugins
 							},
 							google: {
@@ -62,8 +62,16 @@ export default function config(ctx) {
 							}
 						},
 						get: {
-							page: {
-								file: 'page-scraper.js'
+							getOptions: {
+								skipReload: true,
+								reusePage: true
+							},
+							['page-scraper']: {
+								file: 'page-scraper.js',
+								scriptsPath: 'scripts',
+								scripts: {
+									scrapContent: 'scrap-content.js'
+								},
 							}
 						}
 					},

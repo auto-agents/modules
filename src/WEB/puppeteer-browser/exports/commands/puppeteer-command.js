@@ -72,9 +72,9 @@ export default class PupeteerCommand extends Command {
 				o.appendLine('launch browser for action: ' + opts.action + ' with: ' + id +
 					(use ? (', plugin #' + use) : ''))
 				cr = await plugin.search(text, id, use, opts)
-				const sr = cr?.result
 
 				if (plugin.config.dumpSearchResults) {
+					const sr = cr?.searchResult
 					if (sr?.results && sr.results.length > 0) {
 						var n = 1
 						if (sr?.aiContent && sr.aiContent.length > 0) {

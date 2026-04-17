@@ -11,13 +11,12 @@
             return ''
         }
         childs.forEach(c => {
-            var sr = f(c, f)
             r += f(c, f)
         })
         return r
     }
 
-    let tc = node => textContent(node, textContent)
+    let tc = node => textContent(node, textContent)?.trim()
 
     // 1. check captcha
 

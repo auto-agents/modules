@@ -3,6 +3,8 @@ import { join } from 'node:path';
 import { getSessionVars } from '../../../../../../../../shared/src/utils/utils';
 import ScraperError from '../../../components/ScraperError';
 import { PUPPETEER_ACTION_GET, PUPPETEER_ACTION_SEARCH } from '../../../../exports/plugin/puppeteer-browser-plugin';
+import Status from '../../../../../../../../shared/src/utils/status';
+import PupeteerPlugin from '../../../components/puppeteer-plugin';
 //import puppeteer from 'puppeteer-core'
 
 const querystring = require('node:querystring');
@@ -11,14 +13,14 @@ const CAPTCHA_BEFORE_HOME_PAGE = 'CAPTCHA_BEFORE_HOME_PAGE'
 const CAPTCHA_BEFORE_RESULT_PAGE = 'CAPTCHA_BEFORE_HOME_PAGE'
 const RESULT_PAGE = 'RESULT_PAGE'
 
-export default class GoogleScraper {
+export default class GoogleScraper extends PupeteerPlugin {
 
-    // host plugin (puppeteer)
-    plugin = null
     // linked page
     page = null
     // last search results
     search = null
+    // last scrap results
+    scraps = null
     // browse plugin
     browseTasks = {}
 
@@ -27,10 +29,8 @@ export default class GoogleScraper {
     }
 
     constructor(ctx, plugin, config, outputContext) {
-        this.ctx = ctx
-        this.plugin = plugin
-        this.config = config
-        this.outputContext = outputContext
+        super(ctx, plugin, config, outputContext)
+        this.status = new Status(ctx)
     }
 
     #configScript(script, query) {
@@ -77,10 +77,53 @@ export default class GoogleScraper {
 
     async #get(options) {
         // get or build a single browse task
-        const task = this.#getBrowseTask(options)
+        const o = this.outputContext.output
+        const getTask = await this.#getBrowseTask(options)
+        const pagesTasks = []
+
+        options.browseSearchPages.forEach(pageIndex => {
+            const searchPage = this.search[pageIndex]
+            const pageInfos = {}
+            if (searchPage) {
+
+                const pageTask = async () => {
+                    const results = searchPage.results
+                    var itemIndex = 0
+                    const tasks = []
+                    results.forEach(item => {
+                        if (item.href &&
+                            !options.limitResults
+                            || itemIndex < options.limitResults) {
+                            const task = async (item) => {
+
+                                const n = itemIndex
+                                try {
+                                    const pageInfo = await getTask.pluginGet.run(item.href)
+                                    pageInfos[n] = pageInfo
+                                } catch (err) {
+                                    o.appendLine(this.status.error('scrap link #' + n + ' failed: ' + err.message))
+                                }
+                            }
+                            tasks.push(task(item))
+                        }
+                        itemIndex++
+                    })
+                    await Promise.all(tasks)
+
+                    this.scraps = pageInfos
+                    this.search[pageIndex].content = this.scraps
+                }
+                pagesTasks.push(pageTask())
+
+            } else
+                o.appendLine(this.status.warning('page not available: #' + pageIndex))
+        });
+
+        await Promise.all(pagesTasks)
+        return this.search
     }
 
-    #getBrowseTask(options) {
+    async #getBrowseTask(options) {
         if (!this.search) throw new Error('no search results available')
 
         const o = this.outputContext.output
@@ -92,19 +135,19 @@ export default class GoogleScraper {
             o.appendLine('reuse get task "' + task.pluginGetName + '": #' + task.id)
         }
         else {
-            task = this.#getNewBrowseTask(options)
+            task = await this.#getNewBrowseTask(options)
             this.browseTasks[task.id] = task
             o.appendLine('add new get task "' + task.pluginGetName + '": #' + task.id)
         }
         return task
     }
 
-    #getNewBrowseTask(options) {
+    async #getNewBrowseTask(options) {
         var id = 0
         const tasks = Object.values(this.browseTasks)
         if (tasks.length > 0)
             id = Math.max(...tasks.map(x => x.id)) + 1
-        const pluginGet = this.plugin.getPlugin(
+        const pluginGet = await this.plugin.getPlugin(
             this.plugin.config.paths.getPlugins,
             options.pluginGetName,
             this.plugin.config.plugins[this.plugin.config.paths.getPlugins][options.pluginGetName]
@@ -115,6 +158,7 @@ export default class GoogleScraper {
 
     async #search(query, usePage, options) {
         try {
+            const pageIndex = 1
             const o = this.outputContext.output
             const url = this.config.queryUrl.replace(
                 '{search_query}',
@@ -129,11 +173,11 @@ export default class GoogleScraper {
                 page = this.page
                 await page.bringToFront()
                 await page.goto(url)
-                o.appendLine(`page ${page.id} focused`)
+                o.appendLine(`page #${page.id} focused`)
             }
             else {
                 const pageInfo = this.pageInfo = await this.plugin.openPage(url)
-                o.appendLine(`page ${pageInfo.id} opened`)
+                o.appendLine(`page #${pageInfo.id} opened`)
                 page = this.page = pageInfo.page
             }
 
@@ -169,11 +213,11 @@ export default class GoogleScraper {
             }
 
             r.query = query
+            r = { [pageIndex]: r }
             getSessionVars(this.ctx).set('search', r)
             o.appendLine('success ✔️')
 
             this.search = r
-
             return r
 
         } catch (err) {

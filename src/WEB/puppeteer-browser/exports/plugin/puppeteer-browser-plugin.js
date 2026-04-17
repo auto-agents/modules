@@ -40,7 +40,7 @@ export default class PuppeteerBrowserPlugin {
 			try {
 				await this.closePage(id)
 			} catch (err) {
-				this.#o().apppendLine(
+				this.#o().appendLine(
 					this.status.error(err?.stack || err?.toString() || err)
 				)
 			}
@@ -124,7 +124,7 @@ export default class PuppeteerBrowserPlugin {
 		this.pageId++
 		this.pages[id] = page
 		page.id = id
-		return { page: page, id: id }
+		return { page: page, id: id, url: url }
 	}
 
 	async closePage(id) {
@@ -202,7 +202,7 @@ export default class PuppeteerBrowserPlugin {
 		return {
 			id: plugin.id,
 			plugin: plugin,
-			result: result
+			searchResult: result
 		}
 	}
 
