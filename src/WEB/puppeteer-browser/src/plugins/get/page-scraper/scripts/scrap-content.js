@@ -58,7 +58,6 @@
     r.links = document.querySelectorAll('a').values().toArray()
         .map(x => new Object({ text: tc(x), href: x.href }))
         .filter(x => x != null && x.href != null && x.href !== undefined
-            && x.href?.trim()?.length > 0
         )
 
     // 2. links - buttons
@@ -66,7 +65,6 @@
     r.buttons = document.querySelectorAll('button').values().toArray()
         .map(x => new Object({ id: x.id, name: x.name, type: x.type, text: tc(x) }))
         .filter(x => x != null && x.text != null && x.text !== undefined
-            && x.text?.trim()?.length > 0
         )
 
     // 3. input

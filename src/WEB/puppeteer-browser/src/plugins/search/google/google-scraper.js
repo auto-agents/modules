@@ -176,7 +176,8 @@ export default class GoogleScraper extends PupeteerPlugin {
             const o = this.outputContext.output
             const url = this.config.queryUrl.replace(
                 '{search_query}',
-                querystring.escape(query))
+                querystring.escape(query)
+                    .replaceAll("'", "\\'"))
 
             // 1. open the search home page
 

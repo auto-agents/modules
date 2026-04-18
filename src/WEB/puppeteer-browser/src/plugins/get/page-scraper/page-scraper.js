@@ -113,8 +113,11 @@ export default class PageScraper extends PupeteerPlugin {
             }
             catch (err) {
 
+                // free the page
+                if (pageInfo != null) {
+                    pageInfo.owner = null
+                }
                 throw new ScraperError(err)
-
             }
         }
     }
