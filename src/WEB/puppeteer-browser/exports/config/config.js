@@ -180,6 +180,11 @@ export default function config(ctx) {
 					file: 'puppeteer-command.js'
 				}
 			]
+		},
+		tools: {
+			webSearch: {
+				file: 'web-search-tool.js'
+			}
 		}
 	}
 }
