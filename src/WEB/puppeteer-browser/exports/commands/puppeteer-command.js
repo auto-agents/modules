@@ -30,7 +30,7 @@ export default class PupeteerCommand extends Command {
 			|| this.getPositionalArg(com, args, argText, 2)
 
 		const argUse = 'plugin'
-		const use = this.getValue(com, args, argUse)
+		var use = this.getValue(com, args, argUse)
 
 		const argGet = 'get'
 		const get = this.getValue(com, args, argGet)
@@ -75,7 +75,7 @@ export default class PupeteerCommand extends Command {
 			}
 
 			o.newLine()
-			o.appendLine('launch browser for action: ' + opts.action + ' with: ' + id +
+			o.appendLine('launch browser action: ' + opts.action + ' with: ' + id +
 				(use ? (', plugin #' + use) : ''))
 			cr = await plugin.search(text, id, use, opts)
 			return cr
@@ -106,8 +106,10 @@ export default class PupeteerCommand extends Command {
 					}
 				}
 
-				if (deep)
-					search(null, get, use, limit)
+				if (deep) {
+					use ||= cr.id
+					cr = await search(null, get, use, limit)
+				}
 				break
 
 			case 'open':

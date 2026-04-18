@@ -1,4 +1,5 @@
 import AITool from "../../../../../../shared/src/components/ai-tools/ai-tool"
+import { cmd } from "../../../../../../shared/src/utils/utils"
 
 export default class WebSearchTool extends AITool {
 
@@ -30,6 +31,28 @@ export default class WebSearchTool extends AITool {
     }
 
     async run(args) {
+        const id = args.engine || 'google'
+        var query = args.query
 
+        // /pup search {id} {query} -g default -d
+        query = query.replaceAll('"', '')
+        const res = await cmd(this.ctx,
+            'puppeteer', 'search', id,
+            '"' + query + '"', '-g', 'default', '-d')
+
+        if (res instanceof Error) {
+            // search error
+            return this.jsonPlainResult(
+                {
+                    error: res.message || res.toString() || res
+                }
+            )
+        }
+
+        const r = res["1"]
+
+        return this.jsonPlainResult({
+            query_result: r.aiContent
+        })
     }
 }
