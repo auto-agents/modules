@@ -49,7 +49,12 @@ export default class WebSearchTool extends AITool {
             )
         }
 
-        const r = res["1"]
+        const r = res.searchResult ? res.searchResult["1"] : null
+        if (!r) {
+            return this.jsonPlainResult({
+                query_result: 'no result found'
+            })
+        }
 
         return this.jsonPlainResult({
             query_result: r.aiContent

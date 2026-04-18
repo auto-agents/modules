@@ -137,7 +137,7 @@ export default class PuppeteerBrowserPlugin {
 	async getPlugin(category, name, config, pluginId) {
 
 		var plugin = null
-		if (pluginId) {
+		if (pluginId || pluginId == 0) {
 			if (this.plugins[pluginId]) {
 				plugin = this.plugins[pluginId]
 				return plugin
