@@ -15,7 +15,10 @@
     },
     "edge": {
       "runCommand": {
-        "windows": "cmd /c start \"\" msedge \"{url}\"",
+        "_1_": "// basic launch. visible window",
+        "winsdows-1": "cmd /c start \"\" msedge \"{url}\"",
+        "_2_": "// auto-hide method with script (requires Install-Module -Name PoshFunctions -AllowClobber)",
+        "windows": "cmd /c start \"\" ../plugins/speech/src/scripts/launch-edge.ps1 \"{url}\"",
         "linux": "microsoft-edge \"{url}\"",
         "mac": "open -a \"Microsoft Edge\" \"{url}\""
       },
