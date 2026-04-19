@@ -30,6 +30,9 @@ export default function config(ctx) {
 						scripts: '../../src/scripts'		// related to plugin exports/plugin folder
 					},
 					dumpSearchResults: true,
+					vars: [
+						'PLUGIN_NAME', 'puppeteer'
+					],
 
 					plugins: {
 						search: {
@@ -80,8 +83,7 @@ export default function config(ctx) {
 									scrapContent: 'scrap-content.js'
 								},
 								imports: [
-								import { puppeteer } from 'puppeteer-core';
-								'utils.js'
+									'utils.js'
 								]
 							}
 						}
