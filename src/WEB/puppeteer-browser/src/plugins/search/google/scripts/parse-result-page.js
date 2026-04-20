@@ -2,26 +2,9 @@
 
 (async () => {
 
-    let textContent = (node, f) => {
-        var r = ''
-        var childs = node.childNodes.values().toArray()
-        if (childs.length == 0) {
-            if (node.nodeType == 3 && node.textContent && node.textContent.trim().length > 0)
-                return '\n' + node.textContent
-            return ''
-        }
-        childs.forEach(c => {
-            if (c.tagName != 'SCRIPT' && c.tagName != 'STYLE'
-                && c.tagName != 'script' && c.tagName != 'style'
-            )
-                r += f(c, f)
-        })
-        return r
-    }
+    // {UTILS_JS}
 
-    let tc = node => textContent(node, textContent)?.trim()
-
-    console.log('parse result page')
+    console.log('{PLUGIN_NAME}: parse result page')
 
     // 1. check captcha
 
@@ -52,11 +35,11 @@
     let results = list.map((x, i) => {
 
         const p = x.parentNode?.parentNode?.parentNode?.parentNode?.parentNode
-        const o = new Object({ index: i, topic: /*x.innerText*/tc(x), href: x.href, summary: '' })
+        const o = new Object({ index: i, topic: tc(x), href: x.href, summary: '' })
         const childs = p.childNodes.values().toArray()
         if (p && childs.length >= 2) {
             window.ch.push({ n: p, c: childs })
-            o.summary = tc(childs[1]) //.textContent
+            o.summary = tc(childs[1])
         }
         return o;
     })
@@ -84,7 +67,6 @@
         let n = lst[0]
         if (n?.parentNode?.parentNode)
             aiContent = n.parentNode.parentNode.textContent
-        //aiContent = tc(n.parentNode.parentNode)
     }
 
     // "head" response
@@ -92,14 +74,12 @@
     let headResponse1 = ''
     lst = document.querySelectorAll('span[lang]').values().toArray()
     if (lst.length > 0) {
-        //headResponse1 = lst[0].textContent
         headResponse1 = tc(lst[0])
     }
 
     let headResponse2 = ''
     lst = document.querySelectorAll('div[lang]').values().toArray()
     if (lst.length > 0) {
-        //headResponse2 = lst[0].textContent
         headResponse2 = tc(lst[0])
     }
 

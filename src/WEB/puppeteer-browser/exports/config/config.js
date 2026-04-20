@@ -30,9 +30,9 @@ export default function config(ctx) {
 						scripts: '../../src/scripts'		// related to plugin exports/plugin folder
 					},
 					dumpSearchResults: true,
-					vars: [
-						'PLUGIN_NAME', 'puppeteer'
-					],
+					vars: {
+						['PLUGIN_NAME']: 'puppeteer'
+					},
 
 					plugins: {
 						search: {
@@ -47,7 +47,7 @@ export default function config(ctx) {
 								file: 'google-scraper.js',
 								queryUrl: 'https://www.google.com',	// /search?q={search_query}
 								scriptsPath: 'scripts',
-								imports: [
+								includes: [	// preload script in a var having name: UTILS_JS (upper case, . to _)
 									'utils.js'
 								],
 								scripts: {
@@ -82,7 +82,7 @@ export default function config(ctx) {
 								scripts: {
 									scrapContent: 'scrap-content.js'
 								},
-								imports: [
+								includes: [
 									'utils.js'
 								]
 							}

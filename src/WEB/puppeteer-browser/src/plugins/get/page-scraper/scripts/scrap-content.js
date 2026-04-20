@@ -1,5 +1,7 @@
 (async () => {
 
+    // {UTILS_JS}
+
     let wait = async ms => await new Promise(resolve => {
         console.log('wait ' + ms + ' ms');
         setTimeout(() => {
@@ -8,28 +10,9 @@
         }, ms);
     })
 
-    let textContent = (node, f) => {
-        var r = ''
-        var childs = node.childNodes.values().toArray()
-        if (childs.length == 0) {
-            if (node.nodeType == 3 && node.textContent && node.textContent.trim().length > 0)
-                return '\n' + node.textContent
-            return ''
-        }
-        childs.forEach(c => {
-            if (c.tagName != 'SCRIPT' && c.tagName != 'STYLE'
-                && c.tagName != 'script' && c.tagName != 'style'
-            )
-                r += f(c, f)
-        })
-        return r
-    }
-
-    let tc = node => textContent(node, textContent)?.trim()
-
     // -----------------------------------
 
-    console.log('scrap content')
+    console.log('{PLUGIN_NAME}: scrap content')
     await wait(1)
 
     let r = {
@@ -44,6 +27,7 @@
         inputs: [],
         textAreas: [],
         images: [],
+        videos: [],
         metas: {}
     }
 
@@ -58,17 +42,17 @@
     // 2. links
 
     r.links = document.querySelectorAll('a').values().toArray()
-        .map(x => new Object({ text: tc(x), href: x.href }))
-        .filter(x => x != null && x.href != null && x.href !== undefined
-            && String(x.href).length > 0
+        .map(x => new Object({ description: tc(x), url: x.href }))
+        .filter(x => x != null && x.url != null && x.url !== undefined
+            && String(x.url).length > 0
         )
 
     // 2. links - buttons
 
     r.buttons = document.querySelectorAll('button').values().toArray()
-        .map(x => new Object({ id: x.id, name: x.name, type: x.type, text: tc(x) }))
-        .filter(x => x != null && x.text != null && x.text !== undefined
-            && String(x.href).length > 0
+        .map(x => new Object({ id: x.id, name: x.name, type: x.type, description: tc(x) }))
+        .filter(x => x != null && x.description != null && x.description !== undefined
+            && String(x.description).length > 0
         )
 
     // 3. input
@@ -92,19 +76,50 @@
     // 4. images
 
     r.images = document.querySelectorAll('img').values().toArray()
-        .map(x => new Object({ alt: x.alt, src: x.src }))
-        .filter(x => x.src != null && x.src !== undefined
-            && x.src.trim().length > 0
+        .map(x => new Object({
+            description: x.alt,
+            url: x.src,
+            width: x.getBoundingClientRect().width,
+            height: x.getBoundingClientRect().height
+        }))
+        .filter(x => x.url != null && x.url !== undefined
+            && x.url.trim().length > 0
+            && x.width > 0
+            && x.height > 0
         )
 
-    // 5. header & footer
+    // 5. videos
+
+    const tvid = document.querySelectorAll('video').values().toArray()
+    r.videos = tvid
+        .map(x => new Object({
+            description: x.alt,
+            url: x.src,
+            width: x.getBoundingClientRect().width,
+            height: x.getBoundingClientRect().height
+        }))
+        .filter(x => x.url != null && x.url !== undefined
+            && x.url.trim().length > 0
+            && x.width > 0
+            && x.height > 0
+        )
+    let frm = () => {
+        var t = document.querySelectorAll('video').values().toArray()
+        t.forEach(node => {
+            node.parentNode?.removeChild(node)
+        })
+    }
+    frm()
+    setInterval(frm, 250)
+
+    // 6. header & footer
 
     let n = (document.querySelector('header'))
     if (n) r.header = tc(n)
     n = (document.querySelector('footer'))
     if (n) r.footer = tc(n)
 
-    // 6 meta
+    // 7 meta
 
     let metList = document.querySelectorAll('meta').values().toArray()
     metList.map(m => {

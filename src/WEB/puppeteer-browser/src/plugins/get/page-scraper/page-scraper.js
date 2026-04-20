@@ -59,6 +59,7 @@ export default class PageScraper extends PupeteerPlugin {
                             pageInfo = pageRecyclables[0]
                             page = pageInfo.page
                             await page.goto(url)
+                            await super.importScripts(page)
                             await page.bringToFront()
                             page.owner = this
                             o.appendLine(`page #${page.id} loaded (recycled)`)
@@ -79,6 +80,7 @@ export default class PageScraper extends PupeteerPlugin {
                         // add a new page
                         o.appendLine(`opening page (tabs=${PageScraper.tabsCount})`)
                         pageInfo = await this.plugin.openPage(url)
+                        await super.importScripts(pageInfo.page)
                         pageInfo.owner = this
                         await PageScraper.scrapMutex.runExclusive(async () => {
                             PageScraper.pagesInfos[pageInfo.id] = pageInfo

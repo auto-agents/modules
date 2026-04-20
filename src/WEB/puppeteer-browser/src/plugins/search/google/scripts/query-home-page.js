@@ -3,19 +3,23 @@
 
 (async () => {
 
-    let wait = async ms => await new Promise(resolve => {
+    // {UTILS_JS}
+
+    wait = async ms => await new Promise(resolve => {
         console.log('wait ' + ms + ' ms');
         setTimeout(() => {
             console.log('end wait ' + ms + ' ms')
             resolve();
         }, ms);
-    })
+    });
 
     // 0. setup
 
     let query = '{query}'
     let kdbDelay = '{minimumKbdDelay}'
     let delay = '{minimumPauseDelay}'
+
+    console.log('{PLUGIN_NAME}: launch search')
 
     // 1. check if sorry captcha page
 
