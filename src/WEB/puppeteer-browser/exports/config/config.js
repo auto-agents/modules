@@ -39,7 +39,7 @@ export default function config(ctx) {
 							searchOptions: {
 								action: null,				// requested action: SEARCH | GET
 								browseSearchPages: [1],		// pages results to include in deep search
-								limitResults: 3,			// result per page to handle for deep search
+								limitResults: 5,			// result per page to handle for deep search
 								pluginGetName: 'page-scraper',
 								reuseGetPlugin: true		// if true reuse already instanciated get plugins
 							},
@@ -112,7 +112,7 @@ export default function config(ctx) {
 							"--remote-debugging-port=0", "--user-data-dir=C:\\Users\\franc\\AppData\\Local\Temp\\puppeteer_dev_chrome_profile-yAI6Yw"
 						],
 						line: '"C:<\\Program Files\\Google\\Chrome\\Application\\chrome.exe" --allow-pre-commit-input --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-crash-reporter --disable-default-apps --disable-dev-shm-usage --disable-hang-monitor --disable-infobars --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-search-engine-choice-screen --disable-sync --enable-automation --export-tagged-pdf --force-color-profile=srgb --generate-pdf-document-outline --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --disable-features=Translate,AcceptCHFrame,MediaRouter,OptimizationHints,RenderDocument,PartitionAllocSchedulerLoopQuarantineTaskControlledPurge,ProcessPerSiteUpToMainFrameThreshold,IsolateSandboxedIframes --enable-features=PdfOopif --auto-open-devtools-for-tabs --disable-extensions about:blank --remote-debugging-port=0 --user-data-dir=C:\\Users\\franc\\AppData\\Local\\Temp\\puppeteer_dev_chrome_profile-1roQRK',
-						wse: 'ws://127.0.0.1:24902/devtools/browser/9a746054-7ce9-4f7f-9dff-c7f394f73a02'
+						wse: 'ws://127.0.0.1:3073/devtools/browser/bf5d04b0-5276-480b-a7e5-497fc4949e68'
 					}
 				}
 			}
