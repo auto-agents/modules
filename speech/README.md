@@ -11,7 +11,7 @@
 **This repository contains a speech plugin**
 </td>
 <td>
-<img src="assets/agent-5.jfif" alt="Auto Agents" width="800px">
+<img src="assets/agent-5.jfif" alt="Bulbing Bots" width="800px">
 </td>
 </tr>
 </table>

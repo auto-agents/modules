@@ -2,18 +2,16 @@
 <table>
 <tr>
 <td>
-<h1>Auto Agents</h1>
+<h1>Bulbing Bots</h1>
 
-*&gt; software agents & agents workflows orchestrator.*
-
-***Made by AI for AI. Includes AI Agent***
+LLM&nbsp;Agents&nbsp;Framework&nbsp;and&nbsp;tool
 
 ---
 
 **This repository contains the auto-agents cli plugins**
 </td>
 <td>
-<img src="assets/agent-5.jfif" alt="Auto Agents" width="800px">
+<img src="assets/agent-5.jfif" alt="Bulbing Bots" width="800px">
 </td>
 </tr>
 </table>
@@ -28,6 +26,14 @@
 
 ## available plugins:
 
+This repository contains **software plugins** for **cli tool**, that allows to add new features and capabilities to the **CLI** and to any **agent**. Any plugin can be load or unload on demand. A plugin can expose its functionnalities to the cli and agents in 5 different ways:
+
+- plugins (core functionnalities and libraries)
+- commands
+- tools
+- skills
+- prompts
+
 #### TTS
 
 - [tts-browser](https://github.com/auto-agents/plugins/blob/main/speech) : **Text To Speech** with any browser implementing `WebSpeechAPI`
@@ -38,15 +44,21 @@
     - **OpenVoice V2**
     - **ChatterBox**
     - **XTTS**
-   
+  
 #### STT
 
 - voice recognition : *Speak To Text* with any browser implementing `WebSpeechAPI` *(coming soon)*
 
 #### API
 
-- [Hugging Face](https://github.com/auto-agents/plugins/blob/main/hugging-face) : access to **hugging face API**, get model cards and allow to search the huge hugging face dabatabse for detailed informations about **models**
+- [Hugging Face](https://github.com/auto-agents/plugins/blob/main/src/API/hugging-face/exports/) : access to **hugging face API**, get model cards and allow to search the huge hugging face dabatabase for detailed informations about **models**
 
+#### WEB
+
+- [Puppeteer](https://github.com/auto-agents/plugins/tree/main/src/WEB/puppeteer-browser/exports) : the browser chromium/firefox commander plugin, that allows to control a browser and use it as a tool & skill for agents. It includes the following features :
+    - google search
+    - page scraper
+  
 <br>
 
 ---

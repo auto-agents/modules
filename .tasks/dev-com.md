@@ -1,4 +1,4 @@
-# Implementation Guide : Command in Plugin For Auto Agents
+# Implementation Guide : Command in Plugin For Bulbing Bots
 
 ## Overview
 
