@@ -9,7 +9,7 @@ export default function config(ctx) {
 				category: 'WEB',
 
 				autoLoad: true,
-				enabled: false,
+				enabled: true,
 				isLoaded: false,
 				internal: false,
 
