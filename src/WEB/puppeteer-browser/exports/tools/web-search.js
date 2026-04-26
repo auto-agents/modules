@@ -148,19 +148,19 @@ export default class WebSearchTool extends AITool {
 					if (false) {
 						doc += '\n\n### links\n\n'
 						cp.content.links.forEach(link => {
-							doc += `- ${link.text}\n`
+							doc += `- ${link.description}\n`
 							doc += `\t- ${link.url}\n`
 						});
 
 						doc += '\n\n### images\n\n'
 						cp.content.images.forEach(img => {
-							doc += `- ${img.alt} - ${img.width}x${img.height}\n`
+							doc += `- ${img.description} - ${img.width}x${img.height}\n`
 							doc += `\t- ${img.url}\n`
 						});
 
 						doc += '\n\n### videos\n\n'
 						cp.content.videos.forEach(vid => {
-							doc += `- ${vid.alt} - ${vid.width}x${vid.height}\n`
+							doc += `- ${vid.description} - ${vid.width}x${vid.height}\n`
 							doc += `\t- ${vid.url}\n`
 						});
 					}
