@@ -1,9 +1,9 @@
 import puppeteer from 'puppeteer'
-import { toJson } from './../../../../../../shared/src/utils/utils';
+import { toJson } from './../../../../../../core/src/utils/utils';
 import { dirname, join } from 'path';
 import { existsSync } from 'fs';
-import { AppExitingEvent, errorEvent, LogErrorEvent, LogWarningEvent } from '../../../../../../shared/src/data/events';
-import Status from '../../../../../../shared/src/utils/status';
+import { AppExitingEvent, errorEvent, LogErrorEvent, LogWarningEvent } from '../../../../../../core/src/data/events';
+import Status from '../../../../../../core/src/utils/status';
 
 export const PUPPETEER_PID = 'PUPPETEER_PID'
 export const PUPPETEER_WSE = 'PUPPETEER_WSE'

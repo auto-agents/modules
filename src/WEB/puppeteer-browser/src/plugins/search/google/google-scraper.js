@@ -1,7 +1,7 @@
-import { getSessionVars, output } from '../../../../../../../../shared/src/utils/utils';
+import { getSessionVars, output } from '../../../../../../../../core/src/utils/utils';
 import ScraperError from '../../../components/ScraperError';
 import { PUPPETEER_ACTION_GET, PUPPETEER_ACTION_SEARCH } from '../../../../exports/plugin/puppeteer-browser-plugin';
-import Status from '../../../../../../../../shared/src/utils/status';
+import Status from '../../../../../../../../core/src/utils/status';
 import PupeteerPlugin from '../../../components/puppeteer-plugin';
 //import puppeteer from 'puppeteer-core'
 

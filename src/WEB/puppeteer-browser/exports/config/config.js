@@ -1,4 +1,4 @@
-import { noiseSuppressBySentenceWordCount } from "../../../../../../shared/src/utils/text/text";
+import { noiseSuppressBySentenceWordCount } from "../../../../../../core/src/utils/text/text";
 
 export default function config(ctx) {
 

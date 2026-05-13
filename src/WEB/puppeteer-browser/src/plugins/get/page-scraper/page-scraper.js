@@ -1,7 +1,7 @@
 import PupeteerPlugin from "../../../components/puppeteer-plugin"
 import ScraperError from "../../../components/ScraperError"
 import { Mutex } from 'async-mutex';
-import { output, wait } from "../../../../../../../../shared/src/utils/utils";
+import { output, wait } from "../../../../../../../../core/src/utils/utils";
 
 export default class PageScraper extends PupeteerPlugin {
 

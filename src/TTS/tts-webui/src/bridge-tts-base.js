@@ -1,7 +1,7 @@
 import { Client } from "@gradio/client";
-import { saveToTemp, toJson } from "../../../../../shared/src/utils/utils";
-import SpeakerError from "../../../../../shared/src/data/speaker-error";
-import { FifoStack, task } from "../../../../../shared/src/utils/fifo-stack";
+import { saveToTemp, toJson } from "../../../../../core/src/utils/utils";
+import SpeakerError from "../../../../../core/src/data/speaker-error";
+import { FifoStack, task } from "../../../../../core/src/utils/fifo-stack";
 import path from 'path'
 import { existsSync, readFileSync } from 'fs'
 import { rm } from "fs/promises";

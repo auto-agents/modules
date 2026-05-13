@@ -1,7 +1,7 @@
-import Command from '../../../../../../shared/src/commands/command.js';
+import Command from '../../../../../../core/src/commands/command.js';
 import chalk from 'chalk'
 import { PUPPETEER_ACTION_GET, PUPPETEER_ACTION_SEARCH, PUPPETEER_GET_ALL, PUPPETEER_GET_DEFAULT } from '../plugin/puppeteer-browser-plugin.js';
-import { output } from '../../../../../../shared/src/utils/utils.js';
+import { output } from '../../../../../../core/src/utils/utils.js';
 
 export default class PupeteerCommand extends Command {
 

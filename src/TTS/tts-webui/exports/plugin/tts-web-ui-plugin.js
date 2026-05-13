@@ -1,8 +1,8 @@
 import { existsSync } from "fs";
 import { join, dirname } from 'path';
-import { toJson } from "../../../../../../shared/src/utils/utils";
-import SpeakerError from "../../../../../../shared/src/data/speaker-error";
-import { CommandRunErrorEvent } from "../../../../../../shared/src/data/events";
+import { toJson } from "../../../../../../core/src/utils/utils";
+import SpeakerError from "../../../../../../core/src/data/speaker-error";
+import { CommandRunErrorEvent } from "../../../../../../core/src/data/events";
 import { spawn } from 'child_process'
 import TTSPluginBase from "../../../tts-plugin-base";
 

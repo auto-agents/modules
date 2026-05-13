@@ -1,6 +1,6 @@
-import AITool from "../../../../../../shared/src/components/ai/tools/ai-tool"
-import Logger from "../../../../../../shared/src/components/sys/logger"
-import { cmd, mdBlockJson, nonEmpty, output, toJson } from "../../../../../../shared/src/utils/utils"
+import AITool from "../../../../../../core/src/components/ai/tools/ai-tool"
+import Logger from "../../../../../../core/src/components/sys/logger"
+import { cmd, mdBlockJson, nonEmpty, output, toJson } from "../../../../../../core/src/utils/utils"
 import { writeFileSync } from 'fs';
 
 export default class WebSearchTool extends AITool {
